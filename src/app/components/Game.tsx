@@ -273,13 +273,13 @@ export default function Game() {
         >
           Add Player
         </Button>
-        {gameInterface.players && gameInterface.players.length > 0 && (
+        {stagedPlayers && stagedPlayers.length > 0 && (
           <Box>
-            {gameInterface?.players?.map((p) => {
+            {stagedPlayers.map((p) => {
               return (
-                <Card key={p.label}>
+                <Card key={p.name}>
                   <Typography variant="body1">
-                    {p.label} - {p.age}
+                    {p.name} - {p.age}
                   </Typography>
                 </Card>
               );
