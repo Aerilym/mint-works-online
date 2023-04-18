@@ -19,7 +19,7 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
-    "mint-works": "ben-cook/mint-works#migrate_from_deno_to_nodejs",
+    "mint-works": "ben-cook/mint-works#b033cf3659d529ea636ad25afa6c9cfc4100c6ba",
     "next": "13.3.0",
     "postcss": "8.4.21",
     "react": "18.2.0",
