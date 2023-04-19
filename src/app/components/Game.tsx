@@ -152,7 +152,7 @@ export default function Game() {
     }>
   >([]);
 
-  const [baseStartingTokens, setBaseStartingTokens] = useState<number>();
+  const [baseStartingTokens, setBaseStartingTokens] = useState<number>(3);
 
   const [availableTurns, setAvailableTurns] = useState<Array<Turn>>([]);
 
