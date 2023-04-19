@@ -1,4 +1,11 @@
 import './globals.css';
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata = {
   title: 'Mint Works Online',
@@ -7,7 +14,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={poppins.className}>
       <body>
         <header className="flex h-14 w-full items-center bg-mintCard-deed p-2">
           <h2 className="text-2xl">Mint Works</h2>
