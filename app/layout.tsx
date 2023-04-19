@@ -19,9 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="flex h-14 w-full items-center bg-mintCard-deed p-2">
           <h2 className="text-2xl">Mint Works Online</h2>
         </header>
-        <main className="flex h-full w-full flex-col items-center justify-center p-2">
-          <div className="max-w-6xl">{children}</div>
-        </main>
+        <div className="flex h-full w-full flex-col items-center justify-center p-2">
+          <main className="max-w-6xl">{children}</main>
+        </div>
       </body>
     </html>
   );
