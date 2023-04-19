@@ -3,6 +3,10 @@ import { Box, Card, CardContent, CardHeader, Divider, Icon, Typography } from '@
 import { Plan, PlanType } from 'mint-works/dist/plan';
 import PaidIcon from '@mui/icons-material/Paid';
 import StarIcon from '@mui/icons-material/Star';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import HandymanIcon from '@mui/icons-material/Handyman';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import React from 'react';
 
 function MintCardBox({ children, types }: { children: React.ReactNode; types: Array<PlanType> }) {
@@ -19,6 +23,70 @@ function MintCardBox({ children, types }: { children: React.ReactNode; types: Ar
       {children}
     </Box>
   );
+}
+
+type MintIconName = PlanType | 'Token' | 'Star';
+
+function EmbedMintIcon({
+  embedName,
+  size,
+  styles,
+}: {
+  embedName: string;
+  size?: 'small' | 'inherit' | 'large' | 'medium';
+  styles?: React.CSSProperties;
+}) {
+  const name = parseStringEmbed(embedName) as MintIconName;
+  return <MintIcon name={name} size={size} styles={styles} />;
+}
+
+function MintIcon({
+  name,
+  size,
+  styles,
+}: {
+  name: MintIconName;
+  size?: 'small' | 'inherit' | 'large' | 'medium';
+  styles?: React.CSSProperties;
+}) {
+  function parseIconName(name: MintIconName): typeof StarIcon {
+    console.log(name);
+    switch (name) {
+      case 'Culture':
+        return LocalFloristIcon;
+      case 'Production':
+        return EngineeringIcon;
+      case 'Utility':
+        return HandymanIcon;
+      case 'Deed':
+        return ReceiptLongIcon;
+      case 'Token':
+        return PaidIcon;
+      case 'Star':
+        return StarIcon;
+      default:
+        return PaidIcon;
+    }
+  }
+
+  const Icon = parseIconName(name);
+  return (
+    <Icon
+      fontSize={size}
+      sx={{
+        ...styles,
+        fill: 'white',
+        stroke: '#5e5e5e',
+        strokeWidth: 1.3,
+        strokeLinejoin: 'round',
+      }}
+    />
+  );
+}
+
+function parseStringEmbed(str: string): MintIconName {
+  const word = `${str.slice(1, 2)}${str.slice(2, -1).toLowerCase()}`;
+  return word as MintIconName;
 }
 
 export default function PlanCard({ plan }: { plan: Plan }) {
@@ -38,9 +106,22 @@ export default function PlanCard({ plan }: { plan: Plan }) {
       <CardHeader
         title={
           <MintCardBox types={[...types]}>
-            <Typography variant="h5" fontWeight={'600'}>
-              {plan.name}
-            </Typography>
+            <Box>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  marginLeft: '-20px',
+                }}
+              >
+                {types.map((word, i) => (
+                  <MintIcon key={i} name={word} size="large" styles={{ marginRight: '-12px' }} />
+                ))}
+              </Box>
+
+              <Typography variant="h6" fontWeight={'600'}>
+                {plan.name}
+              </Typography>
+            </Box>
           </MintCardBox>
         }
       />
@@ -52,19 +133,11 @@ export default function PlanCard({ plan }: { plan: Plan }) {
         }}
       >
         {[...Array(cost)].map((e, i) => (
-          <PaidIcon
+          <MintIcon
             key={i}
-            fontSize="large"
-            sx={{
-              marginRight: -0.5,
-              marginLeft: -0.5,
-              color: 'white',
-              backgroundColor: 'mintCard.border',
-              borderColor: 'mintCard.border',
-              borderWidth: 1,
-              borderStyle: 'solid',
-              borderRadius: '100%',
-            }}
+            name="Token"
+            size="large"
+            styles={{ marginRight: -0.6, marginLeft: -0.6 }}
           />
         ))}
       </Box>
@@ -84,54 +157,26 @@ export default function PlanCard({ plan }: { plan: Plan }) {
             {/** Replace all occurrences of :TOKEN: with <PaidIcon/> and :STAR: with <StarIcon/>*/}
             <Typography variant="body1">
               {description
-                ? description.split(' ').map((word) =>
-                    word === ':TOKEN:' ? (
-                      <PaidIcon
-                        key={word}
-                        fontSize="small"
-                        sx={{
-                          marginRight: '3px',
-                          marginBottom: '2px',
-                          color: 'white',
-                          backgroundColor: 'mintCard.border',
-                          borderColor: 'mintCard.border',
-                          borderWidth: 1,
-                          borderStyle: 'solid',
-                          borderRadius: '100%',
-                        }}
-                      />
-                    ) : word === ':STAR:' ? (
-                      <StarIcon
-                        key={word}
-                        fontSize="small"
-                        sx={{
-                          marginRight: '3px',
-                          marginBottom: '2px',
-                          fill: 'white',
-                          stroke: '#5e5e5e',
-                          strokeWidth: '2px',
-                          strokeLinejoin: 'round',
-                        }}
-                      />
-                    ) : (
-                      `${word} `
+                ? description
+                    .split(' ')
+                    .map((word, i) =>
+                      word.startsWith(':') && word.endsWith(':') ? (
+                        <EmbedMintIcon
+                          key={i}
+                          embedName={word}
+                          size="small"
+                          styles={{ marginRight: '3px', marginBottom: '2px' }}
+                        />
+                      ) : (
+                        word + ' '
+                      )
                     )
-                  )
                 : ''}
             </Typography>
 
             <Box>
               {[...Array(baseStars)].map((e, i) => (
-                <StarIcon
-                  fontSize="large"
-                  key={i}
-                  sx={{
-                    fill: 'white',
-                    stroke: '#5e5e5e',
-                    strokeWidth: '2px',
-                    strokeLinejoin: 'round',
-                  }}
-                />
+                <EmbedMintIcon key={i} embedName={':STAR:'} size="large" />
               ))}
             </Box>
           </Box>
