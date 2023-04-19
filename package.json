@@ -20,7 +20,7 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
-    "mint-works": "ben-cook/mint-works#1c011be57b3ab16d86b1c93e1d68ec0b16545633",
+    "mint-works": "ben-cook/mint-works#v0.1.0",
     "next": "13.3.0",
     "postcss": "8.4.21",
     "react": "18.2.0",
