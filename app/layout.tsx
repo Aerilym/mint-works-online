@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <h2 className="text-2xl">Mint Works</h2>
         </header>
         <main className="flex h-full w-full flex-col items-center justify-center p-2">
-          <div className="max-w-4xl">{children}</div>
+          <div className="max-w-6xl">{children}</div>
         </main>
       </body>
     </html>

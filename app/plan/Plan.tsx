@@ -1,17 +1,33 @@
 import { Plan, PlanType } from 'mint-works/dist/plan';
-import { CurrencyDollarIcon, StarIcon } from '@heroicons/react/24/solid';
+import { CurrencyDollarIcon, StarIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 
 export function Plan({ plan, className }: { plan: Plan; className?: string }) {
   const { name, types, cost, description, baseStars } = plan;
+  let color = '';
+  switch (types[0] ?? '') {
+    case 'Culture':
+      color = 'bg-mintCard-culture';
+      break;
+    case 'Deed':
+      color = 'bg-mintCard-deed';
+      break;
+    case 'Production':
+      color = 'bg-mintCard-production';
+      break;
+    case 'Utility':
+      color = 'bg-mintCard-utility';
+      break;
+  }
+
   return (
     <div
       className={clsx(
-        '[aspect-ratio: 0.6] flex h-full flex-col justify-between rounded bg-mintCard-background p-4 text-center shadow',
+        'flex aspect-[0.6] flex-col justify-between rounded  p-4 text-center shadow',
         className
       )}
     >
-      <h3 className="rounded bg-mintCard-culture p-2">{plan.name}</h3>
+      <h3 className={clsx('rounded p-2', color)}>{plan.name}</h3>
 
       <div className="flex items-center justify-center">
         {[...Array(cost)].map((_, idx) => (
@@ -19,7 +35,7 @@ export function Plan({ plan, className }: { plan: Plan; className?: string }) {
         ))}
       </div>
 
-      <div className="h-full bg-mintCard-culture">
+      <div className={clsx('h-full p-2', color)}>
         <div className="flex h-full flex-col justify-between">
           {/** Replace all occurrences of :TOKEN: with <PaidIcon/> and :STAR: with <StarIcon/>*/}
           <p>

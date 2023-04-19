@@ -6,7 +6,7 @@ export default function CardTray() {
   return (
     <div className="grid grid-flow-row grid-cols-4 gap-4">
       {plans.map((plan) => {
-        return <Plan key={plan.name} plan={plan} className="h-72" />;
+        return <Plan key={plan.name} plan={plan} />;
       })}
     </div>
   );
