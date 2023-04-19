@@ -344,13 +344,15 @@ export default function Game() {
             {gameInterface?.gameEngine?.planSupply.deck.length}
           </Typography>
         </Grid>
-        {planSupply?.plans.map((plan) => {
-          return (
-            <Grid item xs={3} key={plan.name}>
-              <PlanCard plan={plan} />
-            </Grid>
-          );
-        })}
+        <Box display={'flex'} flexDirection={'row'} maxHeight={'400px'}>
+          {planSupply?.plans.map((plan) => {
+            return (
+              <Grid item xs={3} key={plan.name}>
+                <PlanCard plan={plan} />
+              </Grid>
+            );
+          })}
+        </Box>
       </Grid>
 
       <Grid container item xs={12}>
