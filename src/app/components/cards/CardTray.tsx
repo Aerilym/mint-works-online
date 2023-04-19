@@ -6,7 +6,8 @@ import { createPlans } from 'mint-works/dist/plans';
 
 export default function CardTray({ num }: { num: number }) {
   const plans = createPlans();
-  const plansToDisplay = [plans[0], plans[10], plans[15]];
+  //const plansToDisplay = [plans[0], plans[10], plans[15]];
+  const plansToDisplay = plans.slice(0, num);
   return (
     <Grid item xs={12} container>
       {plansToDisplay.map((plan) => {

@@ -4,7 +4,7 @@ import CardTray from '../components/cards/CardTray';
 export default function Plan() {
   return (
     <Layout>
-      <CardTray num={3} />
+      <CardTray num={24} />
     </Layout>
   );
 }

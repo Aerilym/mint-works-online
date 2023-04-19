@@ -3,6 +3,7 @@ import { Box, Card, CardContent, CardHeader, Divider, Icon, Typography } from '@
 import { Plan, PlanType } from 'mint-works/dist/plan';
 import PaidIcon from '@mui/icons-material/Paid';
 import StarIcon from '@mui/icons-material/Star';
+import React from 'react';
 
 function MintCardBox({ children, types }: { children: React.ReactNode; types: Array<PlanType> }) {
   const primaryType = types[0].toLowerCase();
@@ -80,7 +81,45 @@ export default function PlanCard({ plan }: { plan: Plan }) {
             flexDirection={'column'}
             justifyContent={'space-between'}
           >
-            <Typography variant="body1">{plan.description}</Typography>
+            {/** Replace all occurrences of :TOKEN: with <PaidIcon/> and :STAR: with <StarIcon/>*/}
+            <Typography variant="body1">
+              {description
+                ? description.split(' ').map((word) =>
+                    word === ':TOKEN:' ? (
+                      <PaidIcon
+                        key={word}
+                        fontSize="small"
+                        sx={{
+                          marginRight: '3px',
+                          marginBottom: '2px',
+                          color: 'white',
+                          backgroundColor: 'mintCard.border',
+                          borderColor: 'mintCard.border',
+                          borderWidth: 1,
+                          borderStyle: 'solid',
+                          borderRadius: '100%',
+                        }}
+                      />
+                    ) : word === ':STAR:' ? (
+                      <StarIcon
+                        key={word}
+                        fontSize="small"
+                        sx={{
+                          marginRight: '3px',
+                          marginBottom: '2px',
+                          fill: 'white',
+                          stroke: '#5e5e5e',
+                          strokeWidth: '2px',
+                          strokeLinejoin: 'round',
+                        }}
+                      />
+                    ) : (
+                      `${word} `
+                    )
+                  )
+                : ''}
+            </Typography>
+
             <Box>
               {[...Array(baseStars)].map((e, i) => (
                 <StarIcon
