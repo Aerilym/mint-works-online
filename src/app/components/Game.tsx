@@ -15,6 +15,7 @@ import {
   Radio,
   RadioGroup,
   RadioProps,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
@@ -227,11 +228,16 @@ export default function Game() {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
+      <Grid
+        item
+        xs={12}
+        lg={6}
+        sx={{ display: 'flex', flexDirection: 'column', padding: 2, gap: 2 }}
+      >
         <TextField
           id="player-name"
           label="Name"
-          variant="standard"
+          variant="filled"
           value={newPlayerName}
           onChange={(e) => {
             setNewPlayerName(e.target.value);
@@ -241,7 +247,7 @@ export default function Game() {
         <TextField
           id="player-age"
           label="Age"
-          variant="standard"
+          variant="filled"
           type="number"
           value={newPlayerAge}
           onChange={(e) => {
@@ -273,20 +279,36 @@ export default function Game() {
         >
           Add Player
         </Button>
+      </Grid>
+
+      <Grid item xs={12} lg={6}>
         {stagedPlayers && stagedPlayers.length > 0 && (
-          <Box>
+          <Stack sx={{ gap: 2, flexDirection: 'row', flexWrap: 'wrap' }}>
             {stagedPlayers.map((p) => {
               return (
-                <Card key={p.name}>
-                  <Typography variant="body1">
-                    {p.name} - {p.age}
-                  </Typography>
+                <Card
+                  key={p.name}
+                  sx={{
+                    backgroundColor: 'mintCard.deed',
+                    color: 'mintCard.textPrimary',
+                    padding: 2,
+                    flexShrink: 0,
+                    flexGrow: 0,
+                  }}
+                >
+                  <Stack sx={{ alignItems: 'center', gap: 2 }}>
+                    <Typography variant="h4" sx={{ flexGrow: 1 }}>
+                      {p.name}
+                    </Typography>
+                    <Typography variant="subtitle1">{p.age}</Typography>
+                  </Stack>
                 </Card>
               );
             })}
-          </Box>
+          </Stack>
         )}
       </Grid>
+
       <Grid item xs={12}>
         <TextField
           required
