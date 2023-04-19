@@ -1,7 +1,7 @@
 import { createPlans } from 'mint-works/dist/plans';
 import { Plan } from './Plan';
 
-export default function CardTray() {
+export default function Page() {
   const plans = createPlans();
   return (
     <div className="grid grid-flow-row grid-cols-4 gap-4">

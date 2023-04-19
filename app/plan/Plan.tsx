@@ -2,7 +2,12 @@ import { Plan, PlanType } from 'mint-works/dist/plan';
 import { CurrencyDollarIcon, StarIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 
-export function Plan({ plan, className }: { plan: Plan; className?: string }) {
+interface PlanProps {
+  plan: Plan;
+  className?: string;
+}
+
+export function Plan({ plan, className }: PlanProps) {
   const { name, types, cost, description, baseStars } = plan;
   let color = '';
   switch (types[0] ?? '') {
