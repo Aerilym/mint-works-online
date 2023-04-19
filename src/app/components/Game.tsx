@@ -228,136 +228,142 @@ export default function Game() {
 
   return (
     <Grid container spacing={2}>
-      <Grid
-        item
-        xs={12}
-        lg={6}
-        sx={{ display: 'flex', flexDirection: 'column', padding: 2, gap: 2 }}
-      >
-        <TextField
-          id="player-name"
-          label="Name"
-          variant="filled"
-          value={newPlayerName}
-          onChange={(e) => {
-            setNewPlayerName(e.target.value);
-          }}
-          error={newPlayerName.length === 0}
-        />
-        <TextField
-          id="player-age"
-          label="Age"
-          variant="filled"
-          type="number"
-          value={newPlayerAge}
-          onChange={(e) => {
-            setNewPlayerAge(parseInt(e.target.value));
-          }}
-          aria-valuemin={0}
-          error={newPlayerAge < 0}
-        />
-        <Button
-          variant="outlined"
-          disabled={newPlayerName.length === 0 || newPlayerAge < 0 || !gameInterface}
-          onClick={() => {
-            if (!gameInterface) throw new Error('No game engine');
-            if (!newPlayerName || newPlayerName.length === 0) throw new Error('No player name');
-            if (!newPlayerAge || newPlayerAge < 0) throw new Error('No player age');
-            setStagedPlayers((prev) => {
-              return [
-                ...prev,
-                {
-                  name: newPlayerName,
-                  age: newPlayerAge,
-                  tokens: baseStartingTokens ?? 0,
-                },
-              ];
-            });
+      {!gameInterface.gameEngine && (
+        <Grid item container xs={12}>
+          <Grid
+            item
+            xs={12}
+            lg={6}
+            sx={{ display: 'flex', flexDirection: 'column', padding: 2, gap: 2 }}
+          >
+            <TextField
+              id="player-name"
+              label="Name"
+              variant="filled"
+              value={newPlayerName}
+              onChange={(e) => {
+                setNewPlayerName(e.target.value);
+              }}
+              error={newPlayerName.length === 0}
+            />
+            <TextField
+              id="player-age"
+              label="Age"
+              variant="filled"
+              type="number"
+              value={newPlayerAge}
+              onChange={(e) => {
+                setNewPlayerAge(parseInt(e.target.value));
+              }}
+              aria-valuemin={0}
+              error={newPlayerAge < 0}
+            />
+            <Button
+              variant="outlined"
+              disabled={newPlayerName.length === 0 || newPlayerAge < 0 || !gameInterface}
+              onClick={() => {
+                if (!gameInterface) throw new Error('No game engine');
+                if (!newPlayerName || newPlayerName.length === 0) throw new Error('No player name');
+                if (!newPlayerAge || newPlayerAge < 0) throw new Error('No player age');
+                setStagedPlayers((prev) => {
+                  return [
+                    ...prev,
+                    {
+                      name: newPlayerName,
+                      age: newPlayerAge,
+                      tokens: baseStartingTokens ?? 0,
+                    },
+                  ];
+                });
 
-            setNewPlayerName('');
-          }}
-        >
-          Add Player
-        </Button>
-      </Grid>
+                setNewPlayerName('');
+              }}
+            >
+              Add Player
+            </Button>
+          </Grid>
 
-      <Grid item xs={12} lg={6}>
-        {stagedPlayers && stagedPlayers.length > 0 && (
-          <Stack sx={{ gap: 2, flexDirection: 'row', flexWrap: 'wrap' }}>
-            {stagedPlayers.map((p) => {
-              return (
-                <Card
-                  key={p.name}
-                  sx={{
-                    backgroundColor: 'mintCard.deed',
-                    color: 'mintCard.textPrimary',
-                    padding: 2,
-                    flexShrink: 0,
-                    flexGrow: 0,
-                  }}
-                >
-                  <Stack sx={{ alignItems: 'center', gap: 2 }}>
-                    <Typography variant="h4" sx={{ flexGrow: 1 }}>
-                      {p.name}
-                    </Typography>
-                    <Typography variant="subtitle1">{p.age}</Typography>
-                  </Stack>
-                </Card>
-              );
-            })}
-          </Stack>
-        )}
-      </Grid>
+          <Grid item xs={12} lg={6}>
+            {stagedPlayers && stagedPlayers.length > 0 && (
+              <Stack sx={{ gap: 2, flexDirection: 'row', flexWrap: 'wrap' }}>
+                {stagedPlayers.map((p) => {
+                  return (
+                    <Card
+                      key={p.name}
+                      sx={{
+                        backgroundColor: 'mintCard.deed',
+                        color: 'mintCard.textPrimary',
+                        padding: 2,
+                        flexShrink: 0,
+                        flexGrow: 0,
+                      }}
+                    >
+                      <Stack sx={{ alignItems: 'center', gap: 2 }}>
+                        <Typography variant="h4" sx={{ flexGrow: 1 }}>
+                          {p.name}
+                        </Typography>
+                        <Typography variant="subtitle1">{p.age}</Typography>
+                      </Stack>
+                    </Card>
+                  );
+                })}
+              </Stack>
+            )}
+          </Grid>
 
-      <Grid item xs={12}>
-        <TextField
-          required
-          id="starting-tokens"
-          label="Starting Tokens"
-          defaultValue="3"
-          value={baseStartingTokens}
-          type="number"
-          onChange={(e) => {
-            setBaseStartingTokens(parseInt(e.target.value));
-          }}
-        />
-        <FormGroup>
-          <FormControlLabel control={<Checkbox defaultChecked />} label="Use Player Ages" />
-        </FormGroup>
-      </Grid>
-      <Grid item xs={12}>
-        <Button
-          variant="outlined"
-          ref={startButtonRef}
-          disabled={!gameInterface || !stagedPlayers || stagedPlayers.length === 0}
-          onClick={() => {
-            stagedPlayers.forEach((p) => {
-              const addRes = gameInterface.addPlayer({
-                name: p.name,
-                age: p.age,
-                tokens: p.tokens ?? baseStartingTokens ?? 3,
-                interactionHooks: {
-                  getTurnFromInterface: (turns: Array<Turn>): Promise<Turn> => {
-                    return handleAskForTurn(turns);
-                  },
-                  getPlayerSelectionFromInterface: (players: Array<string>): Promise<string> => {
-                    return new Promise((resolve) => {
-                      setTimeout(() => {
-                        resolve(players[0]);
-                      }, 1000);
-                    });
-                  },
-                },
-              });
-              console.log('Add Player', addRes);
-            });
-            gameInterface.createGame();
-            gameInterface.startGame();
-          }}
-        >
-          Start Game
-        </Button>
-      </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="starting-tokens"
+              label="Starting Tokens"
+              defaultValue="3"
+              value={baseStartingTokens}
+              type="number"
+              onChange={(e) => {
+                setBaseStartingTokens(parseInt(e.target.value));
+              }}
+            />
+            <FormGroup>
+              <FormControlLabel control={<Checkbox defaultChecked />} label="Use Player Ages" />
+            </FormGroup>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="outlined"
+              ref={startButtonRef}
+              disabled={!gameInterface || !stagedPlayers || stagedPlayers.length === 0}
+              onClick={() => {
+                stagedPlayers.forEach((p) => {
+                  const addRes = gameInterface.addPlayer({
+                    name: p.name,
+                    age: p.age,
+                    tokens: p.tokens ?? baseStartingTokens ?? 3,
+                    interactionHooks: {
+                      getTurnFromInterface: (turns: Array<Turn>): Promise<Turn> => {
+                        return handleAskForTurn(turns);
+                      },
+                      getPlayerSelectionFromInterface: (
+                        players: Array<string>
+                      ): Promise<string> => {
+                        return new Promise((resolve) => {
+                          setTimeout(() => {
+                            resolve(players[0]);
+                          }, 1000);
+                        });
+                      },
+                    },
+                  });
+                  console.log('Add Player', addRes);
+                });
+                gameInterface.createGame();
+                gameInterface.startGame();
+              }}
+            >
+              Start Game
+            </Button>
+          </Grid>
+        </Grid>
+      )}
       <Grid item xs={12} container>
         <Grid item xs={3}>
           <Typography variant="h6">Deck Size</Typography>
@@ -366,7 +372,14 @@ export default function Game() {
             {gameInterface?.gameEngine?.planSupply.deck.length}
           </Typography>
         </Grid>
-        <Box display={'flex'} flexDirection={'row'} maxHeight={'400px'}>
+        <Grid
+          item
+          xs={9}
+          display={'flex'}
+          flexDirection={'row'}
+          minHeight={'200px'}
+          maxHeight={'400px'}
+        >
           {planSupply?.plans.map((plan) => {
             return (
               <Grid item xs={3} key={plan.name}>
@@ -374,7 +387,7 @@ export default function Game() {
               </Grid>
             );
           })}
-        </Box>
+        </Grid>
       </Grid>
 
       <Grid container item xs={12}>
