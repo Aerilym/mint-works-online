@@ -225,7 +225,7 @@ export default function Game() {
     return gameInterface?.gameEngine?.players.find((p) => p.label === playerTurn);
   }, [gameInterface?.gameEngine?.players, playerTurn]);
 
-  return !gameInterface.gameEngine ? (
+  return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <TextField
@@ -336,9 +336,6 @@ export default function Game() {
           Start Game
         </Button>
       </Grid>
-    </Grid>
-  ) : (
-    <Grid container spacing={2}>
       <Grid item xs={12} container>
         <Grid item xs={3}>
           <Typography variant="h6">Deck Size</Typography>
