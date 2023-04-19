@@ -23,19 +23,19 @@ export function Plan({ plan, className }: { plan: Plan; className?: string }) {
   return (
     <div
       className={clsx(
-        'flex aspect-[0.6] flex-col justify-between rounded  p-4 text-center shadow',
+        'flex aspect-[0.6] flex-col justify-between rounded bg-mintCard-background p-4 text-center shadow',
         className
       )}
     >
       <h3 className={clsx('rounded p-2', color)}>{plan.name}</h3>
 
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center p-2">
         {[...Array(cost)].map((_, idx) => (
-          <CurrencyDollarIcon key={idx} className="h-6 w-6" />
+          <CurrencyDollarIcon key={idx} className="h-8 w-8" />
         ))}
       </div>
 
-      <div className={clsx('h-full p-2', color)}>
+      <div className={clsx('h-full rounded p-2', color)}>
         <div className="flex h-full flex-col justify-between">
           {/** Replace all occurrences of :TOKEN: with <PaidIcon/> and :STAR: with <StarIcon/>*/}
           <p>
@@ -44,9 +44,9 @@ export function Plan({ plan, className }: { plan: Plan; className?: string }) {
                   .split(' ')
                   .map((word) =>
                     word === ':TOKEN:' ? (
-                      <CurrencyDollarIcon key={word} className="inline h-6 w-6" />
+                      <CurrencyDollarIcon key={word} className="inline h-8 w-8" />
                     ) : word === ':STAR:' ? (
-                      <StarIcon key={word} className="inline h-6 w-6" />
+                      <StarIcon key={word} className="inline h-8 w-8" />
                     ) : (
                       `${word} `
                     )
@@ -56,7 +56,7 @@ export function Plan({ plan, className }: { plan: Plan; className?: string }) {
 
           <div className="flex items-center justify-center">
             {[...Array(baseStars)].map((_, idx) => (
-              <StarIcon key={idx} className="h-6 w-6" />
+              <StarIcon key={idx} className="h-8 w-8" />
             ))}
           </div>
         </div>
