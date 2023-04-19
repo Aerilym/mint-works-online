@@ -24,10 +24,7 @@ interface PageLink {
   link: string;
 }
 
-const pages: Array<PageLink> = [
-  { name: 'Portfolio', link: 'portfolio' },
-  { name: 'Contact', link: 'contact' },
-];
+const pages: Array<PageLink> = [{ name: 'Demo', link: 'demo' }];
 
 export default function Navbar({ renderAlert }: { renderAlert: boolean }) {
   const { colorMode } = useTheme();
