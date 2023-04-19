@@ -2,6 +2,7 @@ import { ThemeProvider } from '@emotion/react';
 import {
   createTheme,
   CssBaseline,
+  PaletteColorOptions,
   PaletteMode,
   responsiveFontSizes,
   ThemeOptions,
@@ -18,26 +19,62 @@ type ContextProps = {
 
 const ColorModeContext = createContext<Partial<ContextProps>>({});
 
+const MintWorksPrimary: PaletteColorOptions = {
+  50: '#e3eee5',
+  100: '#bbd6bf',
+  200: '#91bb96',
+  300: '#65a36e',
+  400: '#449251',
+  500: '#1c8134',
+  600: '#15742c',
+  700: '#096423',
+  800: '#005419',
+  900: '#003707',
+};
+
+const MintWorksComplementary: PaletteColorOptions = {
+  50: '#eee4ec',
+  100: '#d6bcd2',
+  200: '#bb91b5',
+  300: '#a4669c',
+  400: '#96458d',
+  500: '#87267e',
+  600: '#7b2278',
+  700: '#6c1b71',
+  800: '#5e1569',
+  900: '#450b5b',
+};
+
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   palette: {
     mode,
     ...(mode === 'light'
       ? {
           // palette values for light mode
-          primary: deepPurple,
-          divider: deepPurple[200],
+          primary: MintWorksPrimary,
+          divider: MintWorksPrimary[200],
           text: {
             primary: '#212b36',
             secondary: '#637381',
           },
+          mintCard: {
+            background: '#f2e9d9',
+            textPrimary: '#1f3a42',
+            textSecondary: '#f6eed8',
+            border: '#5e5e5e',
+            deed: '#9cb8ae',
+            utility: '#f1b158',
+            production: '#e17975',
+            culture: '#b6c16c',
+          },
         }
       : {
           // palette values for dark mode
-          primary: deepPurple,
-          divider: deepPurple[700],
+          primary: MintWorksPrimary,
+          divider: MintWorksPrimary[700],
           background: {
             default: '#1c1c1c',
-            paper: deepPurple[900],
+            paper: grey[900],
           },
           text: {
             primary: '#ededed',
