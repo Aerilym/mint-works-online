@@ -1,18 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx}',
-    './src/components/**/*.{js,ts,jsx,tsx}',
-    './src/app/**/*.{js,ts,jsx,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        mintCard: {
+          background: '#f2e9d9',
+          textPrimary: '#1f3a42',
+          textSecondary: '#f6eed8',
+          border: '#5e5e5e',
+          deed: '#9cb8ae',
+          utility: '#f1b158',
+          production: '#e17975',
+          culture: '#b6c16c',
+        },
       },
     },
   },
   plugins: [],
-}
+};
