@@ -1,4 +1,4 @@
-import { Plan, PlanType } from 'mint-works/dist/plan';
+import { Plan } from 'mint-works/dist/plan';
 import { CurrencyDollarIcon, StarIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 
@@ -40,30 +40,27 @@ export function Plan({ plan, className }: PlanProps) {
         ))}
       </div>
 
-      <div className={clsx('h-full rounded p-2', color)}>
-        <div className="flex h-full flex-col justify-between">
-          {/** Replace all occurrences of :TOKEN: with <PaidIcon/> and :STAR: with <StarIcon/>*/}
-          <p>
-            {description
-              ? description
-                  .split(' ')
-                  .map((word) =>
-                    word === ':TOKEN:' ? (
-                      <CurrencyDollarIcon key={word} className="inline h-8 w-8" />
-                    ) : word === ':STAR:' ? (
-                      <StarIcon key={word} className="inline h-8 w-8" />
-                    ) : (
-                      `${word} `
-                    )
+      <div className={clsx('flex h-full flex-col justify-between rounded p-2', color)}>
+        <p>
+          {description
+            ? description
+                .split(' ')
+                .map((word) =>
+                  word === ':TOKEN:' ? (
+                    <CurrencyDollarIcon key={word} className="inline h-8 w-8" />
+                  ) : word === ':STAR:' ? (
+                    <StarIcon key={word} className="inline h-8 w-8" />
+                  ) : (
+                    `${word} `
                   )
-              : ''}
-          </p>
+                )
+            : ''}
+        </p>
 
-          <div className="flex items-center justify-center">
-            {[...Array(baseStars)].map((_, idx) => (
-              <StarIcon key={idx} className="h-8 w-8" />
-            ))}
-          </div>
+        <div className="flex items-center justify-center">
+          {[...Array(baseStars)].map((_, idx) => (
+            <StarIcon key={idx} className="h-8 w-8" />
+          ))}
         </div>
       </div>
     </div>
