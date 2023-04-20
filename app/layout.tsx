@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={poppins.className}>
       <body>
-        <header className="flex h-14 w-full items-center bg-mintCard-deed p-2">
+        <header className="flex h-14 w-full items-center bg-cyan-300 p-2">
           <h2 className="text-2xl">Mint Works Online</h2>
         </header>
         <div className="flex h-full w-full flex-col items-center justify-center p-2">
