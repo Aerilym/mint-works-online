@@ -1,5 +1,5 @@
 'use client';
-import { Button, Input } from '@/app/components';
+import { Button, Input } from '@/components';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
