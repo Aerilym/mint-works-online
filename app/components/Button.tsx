@@ -1,10 +1,19 @@
 import clsx from 'clsx';
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, forwardRef } from 'react';
 
-export function Button({ className, children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement>) {
-  return (
-    <button className={clsx('rounded bg-lime-500 p-2', className)} {...rest}>
-      {children}
-    </button>
-  );
-}
+export const Button = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(
+  ({ className, children, ...rest }, ref) => {
+    return (
+      <button
+        className={clsx('rounded bg-lime-500 p-2 transition-colors hover:bg-lime-400', className)}
+        type="button"
+        ref={ref}
+        {...rest}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+
+Button.displayName = 'Button';

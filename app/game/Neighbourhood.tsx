@@ -1,9 +1,10 @@
 import type { Neighbourhood as MintWorksNeighbourhood } from 'mint-works/dist/neighbourhood';
-import { Plan } from '../plan/Plan';
+import { Plan } from '@/app/plan/Plan';
 
 interface NeighbourhoodProps {
   neighbourhood: MintWorksNeighbourhood;
 }
+
 export function Neighbourhood({ neighbourhood }: NeighbourhoodProps) {
   return (
     <div className="flex">
