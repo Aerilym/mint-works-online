@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-supabase-types": "supabase gen types typescript --linked > lib/database.types.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
@@ -22,6 +23,7 @@
     "clsx": "^1.2.1",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
+    "hashids": "^2.2.11",
     "mint-works": "ben-cook/mint-works#v0.1.0",
     "next": "13.3.0",
     "postcss": "8.4.22",
