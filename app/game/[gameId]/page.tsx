@@ -1,4 +1,4 @@
-import { Button } from '@/app/components';
+import { Button } from '@/components';
 
 interface PageParams {
   params: {
