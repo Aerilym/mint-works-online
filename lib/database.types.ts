@@ -54,6 +54,61 @@ export interface Database {
           state?: Json | null
         }
       }
+      lobbies: {
+        Row: {
+          created_at: string | null
+          id: number
+          join_code: string | null
+          player_1: string | null
+          player_2: string | null
+          player_3: string | null
+          player_4: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          join_code?: string | null
+          player_1?: string | null
+          player_2?: string | null
+          player_3?: string | null
+          player_4?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          join_code?: string | null
+          player_1?: string | null
+          player_2?: string | null
+          player_3?: string | null
+          player_4?: string | null
+        }
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+      }
     }
     Views: {
       [_ in never]: never
