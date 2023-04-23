@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const formDataSchema = z.object({
-  gameId: z.string().length(4, 'The lobby code must be exactly 4 characters!'),
+  joinCode: z.string().length(6, 'The lobby code must be exactly 6 characters!'),
 });
 
 type FormData = z.infer<typeof formDataSchema>;
@@ -24,7 +24,7 @@ export default function Page() {
 
   console.log(errors);
 
-  const onSubmit = (data: FormData) => router.push(`/game/${data.gameId}`);
+  const onSubmit = (data: FormData) => router.push(`/lobby/${data.joinCode}`);
 
   return (
     <div className="flex flex-col items-center gap-8">
@@ -32,15 +32,15 @@ export default function Page() {
         <Input
           type="text"
           className="uppercase"
-          maxLength={4}
-          {...register('gameId', {
-            minLength: 4,
-            maxLength: 4,
+          maxLength={6}
+          {...register('joinCode', {
+            minLength: 6,
+            maxLength: 6,
           })}
-          aria-invalid={errors.gameId ? 'true' : 'false'}
+          aria-invalid={errors.joinCode ? 'true' : 'false'}
         />
-        <p className="text-sm text-red-700">{errors.gameId?.message}</p>
-        <Button type="submit">Join an existing game</Button>
+        <p className="text-sm text-red-700">{errors.joinCode?.message}</p>
+        <Button type="submit">Join a game lobby</Button>
       </form>
 
       <p>
