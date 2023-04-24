@@ -27,19 +27,21 @@ export default function Header() {
   }, [supabase]);
 
   return (
-    <header className="flex h-14 w-full items-center justify-around bg-cyan-300 p-2">
-      <h2 className="text-2xl">
-        <Link href={'/'}>Mint Works Online</Link>
-      </h2>
-      <div className="flex flex-row">
+    <header className="flex h-14 w-full justify-center bg-cyan-300 p-2">
+      <div className="flex h-full w-full max-w-3xl items-center gap-4">
+        <h2 className="grow text-2xl max-sm:hidden">
+          <Link href={'/'}>Mint Works Online</Link>
+        </h2>
+        <h2 className="grow text-2xl sm:hidden">
+          <Link href={'/'}>Mint</Link>
+        </h2>
+
         <h3 className="text-xl">
           <Link href={'/game'}>Play</Link>
         </h3>
         <h3 className="text-xl">
           <Link href={'/'}>Info</Link>
         </h3>
-      </div>
-      <div className="flex flex-row">
         <h3 className="text-xl">
           {loggedIn ? profile?.username : <Link href={'/login'}>Login</Link>}
         </h3>
