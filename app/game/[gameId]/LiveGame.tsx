@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from 'react';
 
-import type { Database } from '@/lib/database.types';
 import { useSupabase } from '@/app/supabase-provider';
 import { Turn } from 'mint-works/dist/turn';
 import { RealtimePostgresUpdatePayload } from '@supabase/supabase-js';
-
-type Game = Database['public']['Tables']['game']['Row'];
+import type { Game } from '@/app/types/database';
 
 export default function LiveGame({
   gameId,
@@ -18,8 +16,7 @@ export default function LiveGame({
   initialGame: Game;
   playerName: string;
 }) {
-  const [liveGame, setLiveGame] =
-    useState<Game>(initialGame);
+  const [liveGame, setLiveGame] = useState<Game>(initialGame);
 
   const [availableTurns, setAvailableTurns] = useState<Array<Turn>>([]);
 
@@ -60,7 +57,7 @@ export default function LiveGame({
       }>
     ) => {
       console.log('Change received!', payload);
-      setLiveGame(payload.new as Database['public']['Tables']['game']['Row']);
+      setLiveGame(payload.new as Game);
 
       if (payload.new.player_to_take_turn === playerName) {
         handleUpdateTurns();

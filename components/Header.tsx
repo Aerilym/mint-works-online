@@ -3,11 +3,9 @@
 import { useSupabase } from '@/app/supabase-provider';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import type { Database } from '@/lib/database.types';
+import type { Profile } from '@/app/types/database';
 
 export default function Header() {
-  type Profile = Database['public']['Tables']['profiles']['Row'];
-
   const [profile, setProfile] = useState<Profile>();
   const { supabase } = useSupabase();
 

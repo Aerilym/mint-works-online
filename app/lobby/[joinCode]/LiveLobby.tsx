@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from 'react';
 
-import type { Database } from '@/lib/database.types';
 import { useSupabase } from '@/app/supabase-provider';
 import Link from 'next/link';
 import { Button } from '@/components';
-
-type Lobby = Database['public']['Tables']['lobbies']['Row'];
+import type { Lobby } from '@/app/types/database';
 
 export default function LiveLobby({
   lobbyId,
