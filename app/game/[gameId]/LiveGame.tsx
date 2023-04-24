@@ -7,17 +7,19 @@ import { useSupabase } from '@/app/supabase-provider';
 import { Turn } from 'mint-works/dist/turn';
 import { RealtimePostgresUpdatePayload } from '@supabase/supabase-js';
 
+type Game = Database['public']['Tables']['game']['Row'];
+
 export default function LiveGame({
   gameId,
   initialGame,
   playerName,
 }: {
   gameId: string;
-  initialGame: Database['public']['Tables']['game']['Row'];
+  initialGame: Game;
   playerName: string;
 }) {
   const [liveGame, setLiveGame] =
-    useState<Database['public']['Tables']['game']['Row']>(initialGame);
+    useState<Game>(initialGame);
 
   const [availableTurns, setAvailableTurns] = useState<Array<Turn>>([]);
 
@@ -86,7 +88,7 @@ export default function LiveGame({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [gameId, playerName, supabase]);
+  }, [gameId, liveGame.player_to_take_turn, playerName, supabase]);
   return (
     <div>
       <h1>Game {gameId}</h1>

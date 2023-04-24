@@ -7,15 +7,16 @@ import { useSupabase } from '@/app/supabase-provider';
 import Link from 'next/link';
 import { Button } from '@/components';
 
+type Lobby = Database['public']['Tables']['lobbies']['Row'];
+
 export default function LiveLobby({
   lobbyId,
   initialLobby,
 }: {
   lobbyId: number;
-  initialLobby: Database['public']['Tables']['lobbies']['Row'];
+  initialLobby: Lobby;
 }) {
-  const [liveLobby, setLiveLobby] =
-    useState<Database['public']['Tables']['lobbies']['Row']>(initialLobby);
+  const [liveLobby, setLiveLobby] = useState<Lobby>(initialLobby);
 
   const { supabase } = useSupabase();
 
@@ -32,7 +33,7 @@ export default function LiveLobby({
         },
         (payload) => {
           console.log('Change received!', payload);
-          setLiveLobby(payload.new as Database['public']['Tables']['lobbies']['Row']);
+          setLiveLobby(payload.new as Lobby);
         }
       )
       .subscribe();
