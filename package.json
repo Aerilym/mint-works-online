@@ -24,7 +24,7 @@
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "hashids": "^2.2.11",
-    "mint-works": "ben-cook/mint-works#v0.1.0",
+    "mint-works": "ben-cook/mint-works#21d8cb6e09623e78fa93de81c735efcf650ff128",
     "next": "13.3.0",
     "postcss": "8.4.22",
     "react": "18.2.0",
