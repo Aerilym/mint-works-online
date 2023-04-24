@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { useSupabase } from '@/app/supabase-provider';
 import { Turn } from 'mint-works/dist/turn';
-import { RealtimePostgresUpdatePayload } from '@supabase/supabase-js';
 import type { Game } from '@/app/types/database';
 
 export default function LiveGame({
@@ -16,14 +15,9 @@ export default function LiveGame({
   initialGame: Game;
   playerName: string;
 }) {
-  const [liveGame, setLiveGame] = useState<Game>(initialGame);
-
-  const [availableTurns, setAvailableTurns] = useState<Array<Turn>>([]);
-
-  const { supabase } = useSupabase();
+  const { liveGame, availableTurns } = useLiveGame(initialGame, gameId, playerName);
 
   const handleSendTurn = async (turn: Turn) => {
-    setAvailableTurns([]);
     const res = await fetch(`/api/turn/${gameId}`, {
       method: 'PUT',
       headers: {
@@ -40,52 +34,6 @@ export default function LiveGame({
     }
   };
 
-  useEffect(() => {
-    const handleUpdateTurns = async () => {
-      const res = await fetch(`/api/turn/${gameId}`, {
-        method: 'GET',
-      });
-
-      const { valid_turns } = await res.json();
-
-      setAvailableTurns(valid_turns);
-    };
-
-    const handleGameUpdate = async (
-      payload: RealtimePostgresUpdatePayload<{
-        [key: string]: any;
-      }>
-    ) => {
-      console.log('Change received!', payload);
-      setLiveGame(payload.new as Game);
-
-      if (payload.new.player_to_take_turn === playerName) {
-        handleUpdateTurns();
-      }
-    };
-
-    if (liveGame.player_to_take_turn === playerName) {
-      handleUpdateTurns();
-    }
-
-    const channel = supabase
-      .channel('custom-filter-channel')
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'game',
-          filter: `game_id=eq.${gameId}`,
-        },
-        (payload) => handleGameUpdate(payload)
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [gameId, liveGame.player_to_take_turn, playerName, supabase]);
   return (
     <div>
       <h1>Game {gameId}</h1>
@@ -100,4 +48,49 @@ export default function LiveGame({
       </ul>
     </div>
   );
+}
+
+function useLiveGame(initialGame: Game, gameId: string, playerName: string) {
+  const [liveGame, setLiveGame] = useState<Game>(initialGame);
+  const [availableTurns, setAvailableTurns] = useState<Array<Turn>>([]);
+
+  const { supabase } = useSupabase();
+
+  useEffect(() => {
+    const handleUpdateTurns = async () => {
+      const res = await fetch(`/api/turn/${gameId}`, {
+        method: 'GET',
+      });
+
+      const { valid_turns } = await res.json();
+
+      setAvailableTurns(valid_turns);
+    };
+    const channel = supabase
+      .channel('custom-filter-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'game',
+          filter: `game_id=eq.${gameId}`,
+        },
+        (payload) => {
+          console.log('Change received!', payload);
+          setLiveGame(payload.new as Game);
+
+          if (payload.new.player_to_take_turn === playerName) {
+            handleUpdateTurns();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [gameId, playerName, supabase]);
+
+  return { liveGame, availableTurns };
 }
