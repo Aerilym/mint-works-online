@@ -6,7 +6,9 @@ import { useEffect, useState } from 'react';
 import type { Database } from '@/lib/database.types';
 
 export default function Header() {
-  const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row']>();
+  type Profile = Database['public']['Tables']['profiles']['Row'];
+
+  const [profile, setProfile] = useState<Profile>();
   const { supabase } = useSupabase();
 
   useEffect(() => {
