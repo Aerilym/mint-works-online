@@ -57,6 +57,7 @@ export interface Database {
       lobbies: {
         Row: {
           created_at: string | null
+          game_id: string | null
           id: number
           join_code: string | null
           player_1: string | null
@@ -66,6 +67,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string | null
+          game_id?: string | null
           id?: number
           join_code?: string | null
           player_1?: string | null
@@ -75,6 +77,7 @@ export interface Database {
         }
         Update: {
           created_at?: string | null
+          game_id?: string | null
           id?: number
           join_code?: string | null
           player_1?: string | null
