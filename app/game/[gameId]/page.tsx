@@ -4,6 +4,7 @@ import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-next
 import { headers, cookies } from 'next/headers';
 
 import type { Database } from '@/lib/database.types';
+import LiveGame from './LiveGame';
 
 interface PageParams {
   params: {
@@ -19,10 +20,20 @@ export default async function Page({ params }: PageParams) {
     cookies,
   });
 
+  const user = await supabase.auth.getUser();
+
+  const userId = user.data.user?.id;
+
   const { data: game, error } = await supabase
     .from('game')
     .select('*')
     .eq('game_id', gameId)
+    .single();
+
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
     .single();
 
   return (
@@ -30,7 +41,9 @@ export default async function Page({ params }: PageParams) {
       <h1 className="mt-2 text-2xl">
         Game <span className="rounded bg-red-500 p-2 shadow-xl">{gameId}</span>
       </h1>
-      {game ? JSON.stringify(game) : error ? error.message : 'Loading...'}
+      {game && (
+        <LiveGame gameId={gameId} initialGame={game} playerName={profile?.username ?? 'Guest'} />
+      )}
     </div>
   );
 }
