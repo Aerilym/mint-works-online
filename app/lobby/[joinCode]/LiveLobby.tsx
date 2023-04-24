@@ -14,32 +14,8 @@ export default function LiveLobby({
   lobbyId: number;
   initialLobby: Lobby;
 }) {
-  const [liveLobby, setLiveLobby] = useState<Lobby>(initialLobby);
+  const liveLobby = useLiveLobby(initialLobby, lobbyId);
 
-  const { supabase } = useSupabase();
-
-  useEffect(() => {
-    const channel = supabase
-      .channel('custom-filter-channel')
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'lobbies',
-          filter: `id=eq.${lobbyId}`,
-        },
-        (payload) => {
-          console.log('Change received!', payload);
-          setLiveLobby(payload.new as Lobby);
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [lobbyId, supabase]);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -74,4 +50,35 @@ export default function LiveLobby({
       )}
     </div>
   );
+}
+
+function useLiveLobby(initialLobby: Lobby, lobbyId: number) {
+  const [liveLobby, setLiveLobby] = useState<Lobby>(initialLobby);
+
+  const { supabase } = useSupabase();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('custom-filter-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'lobbies',
+          filter: `id=eq.${lobbyId}`,
+        },
+        (payload) => {
+          console.log('Change received!', payload);
+          setLiveLobby(payload.new as Lobby);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [lobbyId, supabase]);
+
+  return liveLobby;
 }
