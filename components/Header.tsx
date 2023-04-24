@@ -7,13 +7,11 @@ import type { Database } from '@/lib/database.types';
 
 export default function Header() {
   const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row']>();
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const { supabase } = useSupabase();
 
   useEffect(() => {
     supabase.auth.getUser().then((user) => {
       if (!user.data.user?.id) return;
-      setLoggedIn(true);
       supabase
         .from('profiles')
         .select('*')
@@ -42,9 +40,7 @@ export default function Header() {
         <h3 className="text-xl">
           <Link href={'/'}>Info</Link>
         </h3>
-        <h3 className="text-xl">
-{profile?.username ?? <Link href={'/login'}>Login</Link>}
-        </h3>
+        <h3 className="text-xl">{profile?.username ?? <Link href={'/login'}>Login</Link>}</h3>
       </div>
     </header>
   );
