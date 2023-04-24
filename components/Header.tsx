@@ -43,7 +43,7 @@ export default function Header() {
           <Link href={'/'}>Info</Link>
         </h3>
         <h3 className="text-xl">
-          {loggedIn ? profile?.username : <Link href={'/login'}>Login</Link>}
+{profile?.username ?? <Link href={'/login'}>Login</Link>}
         </h3>
       </div>
     </header>
