@@ -23,7 +23,10 @@ export async function GET({ params }: { params: { userId: string } }) {
   if (error) throw new Error(error.message);
   if (!games) throw new Error('No games found');
 
-  return new Response(JSON.stringify(games), {
+  // As there is a table join, game.game_id is actually the game object
+  const gameList = games.map((game) => game.game_id);
+
+  return new Response(JSON.stringify(gameList), {
     headers: {
       'content-type': 'application/json',
     },
