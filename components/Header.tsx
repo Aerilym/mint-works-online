@@ -40,7 +40,11 @@ export default function Header() {
         <h3 className="text-xl">
           <Link href={'/'}>Info</Link>
         </h3>
-        <h3 className="text-xl">{profile?.username ?? <Link href={'/login'}>Login</Link>}</h3>
+        <h3 className="text-xl">
+          {<Link href={`/profile/${profile?.username}`}>{profile?.username}</Link> ?? (
+            <Link href={'/login'}>Login</Link>
+          )}
+        </h3>
       </div>
     </header>
   );
