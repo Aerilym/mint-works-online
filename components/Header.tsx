@@ -45,6 +45,11 @@ export default function Header() {
             <Link href={'/login'}>Login</Link>
           )}
         </h3>
+        {profile && (
+          <h3 className="text-xl">
+            <Link href={'/logout'}>Logout</Link>
+          </h3>
+        )}
       </div>
     </header>
   );
