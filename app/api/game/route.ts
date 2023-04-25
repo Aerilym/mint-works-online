@@ -84,6 +84,15 @@ export async function POST(request: Request) {
   if (!game) throw new Error('No game data returned from creation');
   if (!game.game_id) throw new Error('No game ID returned from creation');
 
+  const { error: updateLobbyError } = await supabase
+    .from('lobbies')
+    .update({
+      game_id: game.game_id,
+    })
+    .eq('id', id);
+
+  if (updateLobbyError) throw new Error(updateLobbyError.message);
+
   return new Response(
     JSON.stringify({
       game_id: game.game_id,
