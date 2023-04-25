@@ -5,15 +5,15 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { Profile } from '@/app/types/database';
 
 const formDataSchema = z.object({
-  joinCode: z.string().length(6, 'The lobby code must be exactly 6 characters!'),
+  username: z.string().min(3, 'Username must be at least 3 characters!'),
 });
 
 type FormData = z.infer<typeof formDataSchema>;
 
-export default function Page() {
-  const router = useRouter();
+export default function EditUser({ profile }: { profile: Profile }) {
   const {
     register,
     handleSubmit,
@@ -24,7 +24,16 @@ export default function Page() {
 
   console.log(errors);
 
-  const onSubmit = (data: FormData) => router.push(`/lobby/${data.joinCode}`);
+  const onSubmit = async (data: FormData) => {
+    const res = await fetch(`/api/user/${profile.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) console.error(res);
+
+    profile = await res.json();
+  };
 
   return (
     <div className="flex flex-col items-center gap-8">
@@ -32,24 +41,17 @@ export default function Page() {
         <Input
           type="text"
           className="uppercase"
-          maxLength={6}
-          {...register('joinCode', {
-            minLength: 6,
-            maxLength: 6,
+          maxLength={12}
+          defaultValue={profile.username ?? ''}
+          {...register('username', {
+            minLength: 3,
+            maxLength: 12,
           })}
-          aria-invalid={errors.joinCode ? 'true' : 'false'}
+          aria-invalid={errors.username ? 'true' : 'false'}
         />
-        <p className="text-sm text-red-700">{errors.joinCode?.message}</p>
-        <Button type="submit">Join a game lobby</Button>
+        <p className="text-sm text-red-700">{errors.username?.message}</p>
+        <Button type="submit">Update Details</Button>
       </form>
-
-      <p>
-        <i>or...</i>
-      </p>
-
-      <Link href="/game/new">
-        <Button>Create a new game</Button>
-      </Link>
     </div>
   );
 }

@@ -6,11 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-supabase-types": "supabase gen types typescript --linked > lib/database.types.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
     "@hookform/resolvers": "^3.1.0",
+    "@supabase/auth-helpers-nextjs": "^0.6.1",
+    "@supabase/auth-ui-react": "^0.3.5",
+    "@supabase/auth-ui-shared": "^0.1.3",
+    "@supabase/supabase-js": "^2.21.0",
     "@types/node": "18.15.11",
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
@@ -18,7 +23,8 @@
     "clsx": "^1.2.1",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
-    "mint-works": "ben-cook/mint-works#v0.1.0",
+    "hashids": "^2.2.11",
+    "mint-works": "ben-cook/mint-works#21d8cb6e09623e78fa93de81c735efcf650ff128",
     "next": "13.3.0",
     "postcss": "8.4.22",
     "react": "18.2.0",
