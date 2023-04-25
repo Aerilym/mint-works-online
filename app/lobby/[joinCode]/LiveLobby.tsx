@@ -39,12 +39,7 @@ export default function LiveLobby({
         <span>{liveLobby.player_4}</span>
       </div>
       {liveLobby.game_id && (
-        <Link
-          href={{
-            pathname: '/game/[gameId]',
-            query: { gameId: liveLobby.game_id },
-          }}
-        >
+        <Link href={`/game/${liveLobby.game_id}`}>
           <Button>Game in progress... Click to join</Button>
         </Link>
       )}
