@@ -10,4 +10,5 @@ export default async function Page() {
   await supabase.auth.signOut();
 
   router.push('/');
+  return <div></div>;
 }
