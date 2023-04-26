@@ -1,19 +1,9 @@
-import { Game } from '@/app/types/database';
-
-import { GET as gamesGet } from '@/app/api/user/[userId]/games/route';
+import { getGameList } from '@/app/api/user/[userId]/games/route';
 import Link from 'next/link';
 import { Button } from '@/components';
 
-async function getGames({ userId }: { userId: string }): Promise<Array<Game>> {
-  const res = await gamesGet({ params: { userId } });
-
-  if (!res.ok) throw new Error('Failed to fetch games');
-
-  return (await res.json()) as Array<Game>;
-}
-
 export default async function UserGames({ userId }: { userId: string }) {
-  const games = await getGames({ userId });
+  const games = await getGameList({ userId });
 
   return (
     <div>

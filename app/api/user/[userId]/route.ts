@@ -7,22 +7,16 @@ import type { Profile } from '@/app/types/database';
 // do not cache this page
 export const revalidate = 0;
 
-export async function GET({ params }: { params: { userId: string } }) {
+interface GETOptions {
+  params: {
+    userId: string;
+  };
+}
+
+export async function GET(request: Request, { params }: GETOptions) {
   const userId = params.userId;
 
-  const supabase = createRouteHandlerSupabaseClient<Database>({
-    headers,
-    cookies,
-  });
-
-  const { data: profile, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .single();
-
-  if (error) throw new Error(error.message);
-  if (!profile) throw new Error('No profile found');
+  const profile = await getProfileById({ userId });
 
   return new Response(JSON.stringify(profile), {
     headers: {
@@ -31,7 +25,13 @@ export async function GET({ params }: { params: { userId: string } }) {
   });
 }
 
-export async function PATCH(request: Request, { params }: { params: { userId: string } }) {
+interface PATCHOptions {
+  params: {
+    userId: string;
+  };
+}
+
+export async function PATCH(request: Request, { params }: PATCHOptions) {
   const userId = params.userId;
 
   const changedProfile = (await request.json()) as Profile;
@@ -56,4 +56,27 @@ export async function PATCH(request: Request, { params }: { params: { userId: st
       'content-type': 'application/json',
     },
   });
+}
+
+/**
+ * Get a profile from supabase by user id
+ * @param userId - The id of the profile to get
+ * @returns The profile
+ */
+export async function getProfileById({ userId }: { userId: string }): Promise<Profile> {
+  const supabase = createRouteHandlerSupabaseClient<Database>({
+    headers,
+    cookies,
+  });
+
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) throw new Error(error.message);
+  if (!profile) throw new Error('No profile found');
+
+  return profile;
 }

@@ -2,13 +2,35 @@ import { createRouteHandlerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { headers, cookies } from 'next/headers';
 
 import type { Database } from '@/lib/database.types';
+import { Game } from '@/app/types/database';
 
 // do not cache this page
 export const revalidate = 0;
 
-export async function GET({ params }: { params: { userId: string } }) {
+interface GETOptions {
+  params: {
+    userId: string;
+  };
+}
+
+export async function GET(request: Request, { params }: GETOptions) {
   const userId = params.userId;
 
+  const gameList = await getGameList({ userId });
+
+  return new Response(JSON.stringify(gameList), {
+    headers: {
+      'content-type': 'application/json',
+    },
+  });
+}
+
+/**
+ * Get a list of games from supabase by userId
+ * @param userId - The userId of the games to get
+ * @returns The list of games
+ */
+export async function getGameList({ userId }: { userId: string }): Promise<Array<Partial<Game>>> {
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
     cookies,
@@ -26,9 +48,5 @@ export async function GET({ params }: { params: { userId: string } }) {
   // As there is a table join, game.game_id is actually the game object
   const gameList = games.map((game) => game.game_id);
 
-  return new Response(JSON.stringify(gameList), {
-    headers: {
-      'content-type': 'application/json',
-    },
-  });
+  return gameList as Array<Partial<Game>>;
 }
