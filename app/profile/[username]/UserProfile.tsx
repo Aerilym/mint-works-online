@@ -4,9 +4,12 @@ import { Profile } from '@/app/types/database';
 import { Button } from '@/components';
 import { useState } from 'react';
 import EditUser from './EditUser';
+import { useUser } from '@/app/user-provider';
 
-export default function UserProfile({ profile, isOwner }: { profile: Profile; isOwner: boolean }) {
+export default function UserProfile({ profile }: { profile: Profile }) {
+  const { user } = useUser();
   const [editing, setEditing] = useState(false);
+  const isOwner = profile.id === user?.id;
   return (
     <div>
       <h2>Profile</h2>

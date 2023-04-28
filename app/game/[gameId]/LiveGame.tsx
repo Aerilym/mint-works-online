@@ -8,17 +8,11 @@ import type { Game } from '@/app/types/database';
 import { MintWorksEngineState } from 'mint-works/dist/mint_works';
 import { Plan } from '@/app/plan/Plan';
 import { Building, HandPlan } from 'mint-works/dist/plan';
+import { useUser } from '@/app/user-provider';
 
-export default function LiveGame({
-  gameId,
-  initialGame,
-  playerName,
-}: {
-  gameId: string;
-  initialGame: Game;
-  playerName: string;
-}) {
-  const { state, playerToTakeTurn, availableTurns } = useLiveGame(initialGame, gameId, playerName);
+export default function LiveGame({ gameId, initialGame }: { gameId: string; initialGame: Game }) {
+  const { user } = useUser();
+  const { state, playerToTakeTurn, availableTurns } = useLiveGame(initialGame, gameId);
 
   const handleSendTurn = async (turn: Turn) => {
     const res = await fetch(`/api/turn/${gameId}`, {
@@ -59,20 +53,26 @@ export default function LiveGame({
           </ul>
         </div>
         <div>
-          <h2>Your neighbourhood:</h2>
-          <div>
-            <h3>{playerName}</h3>
-            <h4>{state.players?.find((player) => player.label === playerName)?.tokens} tokens</h4>
-            <Neighbourhood
-              neighbourhood={
-                state.players?.find((player) => player.label === playerName)?.neighbourhood!
-              }
-            />
-          </div>
+          {user && (
+            <div>
+              <h2>Your neighbourhood:</h2>
+              <div>
+                <h3>{user.username}</h3>
+                <h4>
+                  {state.players?.find((player) => player.label === user.username)?.tokens} tokens
+                </h4>
+                <Neighbourhood
+                  neighbourhood={
+                    state.players?.find((player) => player.label === user.username)?.neighbourhood!
+                  }
+                />
+              </div>
+            </div>
+          )}
           <h2>Other neighbourhoods:</h2>
           <div>
             {state.players
-              ?.filter((player) => player.label !== playerName)
+              ?.filter((player) => player.label !== user?.username)
               .map((player) => (
                 <div key={player.label}>
                   <h3>{player.label}</h3>
@@ -89,13 +89,13 @@ export default function LiveGame({
 
 function useLiveGame(
   initialGame: Game,
-  gameId: string,
-  playerName: string
+  gameId: string
 ): {
   state: MintWorksEngineState;
   playerToTakeTurn?: string;
   availableTurns: Array<Turn>;
 } {
+  const { user } = useUser();
   const [state, setLiveState] = useState<MintWorksEngineState>(
     JSON.parse(initialGame.state as any) as MintWorksEngineState
   );
@@ -116,9 +116,11 @@ function useLiveGame(
 
       if (valid_turns.length === 0) throw new Error('No valid turns!');
 
-      if (valid_turns[0].playerName !== playerName) return;
-
-      setAvailableTurns(valid_turns);
+      if (valid_turns[0].playerName === user?.username) {
+        setAvailableTurns(valid_turns);
+      } else {
+        setAvailableTurns([]);
+      }
     };
     const channel = supabase
       .channel('custom-filter-channel')
@@ -134,10 +136,7 @@ function useLiveGame(
           console.log('Change received!', payload);
           setLiveState(payload.new.state as any);
           setPlayerToTakeTurn(payload.new.player_to_take_turn);
-
-          if (payload.new.player_to_take_turn === playerName) {
-            handleUpdateTurns();
-          }
+          handleUpdateTurns();
         }
       )
       .subscribe();
@@ -147,7 +146,7 @@ function useLiveGame(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [gameId, playerName, supabase]);
+  }, [gameId, supabase, user?.username]);
 
   return {
     state,

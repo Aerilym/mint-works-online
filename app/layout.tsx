@@ -2,6 +2,7 @@ import './globals.css';
 import { Poppins } from 'next/font/google';
 import SupabaseProvider from './supabase-provider';
 import Header from '@/components/Header';
+import UserProvider from './user-provider';
 
 const poppins = Poppins({
   weight: '400',
@@ -19,10 +20,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={poppins.className}>
       <body>
         <SupabaseProvider>
-          <Header/>
-          <div className="flex h-full w-full flex-col items-center justify-center p-2">
-            <main className="max-w-6xl">{children}</main>
-          </div>
+          <UserProvider>
+            <Header />
+            <div className="flex h-full w-full flex-col items-center justify-center p-2">
+              <main className="max-w-6xl">{children}</main>
+            </div>
+          </UserProvider>
         </SupabaseProvider>
       </body>
     </html>

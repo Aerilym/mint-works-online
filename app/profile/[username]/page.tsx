@@ -6,6 +6,7 @@ import { headers, cookies } from 'next/headers';
 import { getProfileByUsername } from '@/app/api/profile/[username]/route';
 import type { Database } from '@/lib/database.types';
 import UserProfile from './UserProfile';
+import { useUser } from '@/app/user-provider';
 
 interface PageParams {
   params: {
@@ -30,13 +31,9 @@ export default async function Page({ params }: PageParams) {
     cookies,
   });
 
-  const user = await supabase.auth.getUser();
-
-  const isOwner = profile.id === user.data.user?.id;
-
   return (
     <div className="flex flex-col items-center gap-8">
-      {profile && <UserProfile profile={profile} isOwner={isOwner} />}
+      {profile && <UserProfile profile={profile} />}
       {/* @ts-expect-error Async Server Component */}
       {profile.id && <UserGames userId={profile.id} />}
     </div>
