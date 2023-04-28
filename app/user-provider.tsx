@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { useSupabase } from './supabase-provider';
 import { Profile } from './types/database';
+import { User } from '@supabase/supabase-js';
 
 interface UserData {
   id: string;
@@ -21,26 +22,32 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
+    const handleUserUpdate = async (user: User) => {
+      const res = await fetch(`/api/user/${user.id}`);
+      const profile = (await res.json()) as Profile;
+
+      if (!profile) throw new Error('No profile found!');
+
+      setUser({
+        id: user.id,
+        username: profile.username ?? user.id,
+      });
+    };
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' || event === 'USER_UPDATED' || event === 'TOKEN_REFRESHED') {
-        const userId = session?.user.id;
-
-        if (!userId) throw new Error('No user id found!');
-
-        const res = await fetch(`/api/user/${userId}`);
-        const profile = (await res.json()) as Profile;
-
-        if (!profile) throw new Error('No profile found!');
-
-        setUser({
-          id: userId,
-          username: profile.username ?? userId,
-        });
+        if (!session) throw new Error('No session found!');
+        handleUserUpdate(session.user);
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
       }
+    });
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) return handleUserUpdate(data.user);
+      return setUser(null);
     });
 
     return () => {
