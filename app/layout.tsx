@@ -4,7 +4,7 @@ import { Poppins } from 'next/font/google';
 
 import Header from '@/components/Header';
 
-import SupabaseProvider from './supabase-provider';
+import SupabaseProvider from '../providers/supabase-provider';
 import UserProvider from './user-provider';
 
 const poppins = Poppins({

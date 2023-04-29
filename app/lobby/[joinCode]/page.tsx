@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { useSupabase } from '@/app/supabase-provider';
 import { Button } from '@/components';
+import { useSupabase } from '@/providers/supabase-provider';
 
 import LiveLobby from './LiveLobby';
 

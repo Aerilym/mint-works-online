@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import { useSupabase } from '@/app/supabase-provider';
+import { useSupabase } from '@/providers/supabase-provider';
 
 export default function Logout() {
   const router = useRouter();
