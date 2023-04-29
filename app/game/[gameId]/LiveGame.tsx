@@ -6,10 +6,10 @@ import type { Turn } from 'mint-works/dist/turn';
 import { useEffect, useState } from 'react';
 
 import { Plan } from '@/app/plan/Plan';
+import { Button } from '@/components';
 import { useSupabase } from '@/providers/supabase-provider';
 import { useUser } from '@/providers/user-provider';
 import type { Game } from '@/types/database';
-import { Button } from '@/components';
 
 export default function LiveGame({ gameId, initialGame }: { gameId: string; initialGame: Game }) {
   const { user } = useUser();
