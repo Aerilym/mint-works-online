@@ -3,7 +3,7 @@ import { forwardRef, InputHTMLAttributes } from 'react';
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
   ({ className, children, ...rest }, ref) => (
-    <input className={clsx('rounded bg-lime-50 p-2', className)} ref={ref} {...rest}>
+    <input className={clsx('rounded border bg-lime-50 p-2', className)} ref={ref} {...rest}>
       {children}
     </input>
   )
