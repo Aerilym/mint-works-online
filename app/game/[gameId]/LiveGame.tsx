@@ -9,6 +9,7 @@ import { Plan } from '@/app/plan/Plan';
 import { useSupabase } from '@/providers/supabase-provider';
 import { useUser } from '@/providers/user-provider';
 import type { Game } from '@/types/database';
+import { Button } from '@/components';
 
 export default function LiveGame({ gameId, initialGame }: { gameId: string; initialGame: Game }) {
   const { user } = useUser();
@@ -36,8 +37,8 @@ export default function LiveGame({ gameId, initialGame }: { gameId: string; init
   return (
     <div>
       <h1>Game {gameId}</h1>
-      <div className="grid w-screen grid-flow-row grid-cols-2">
-        <div>
+      <div className="flex w-screen flex-row gap-20">
+        <div className="w-min">
           <h2>Plan Supply:</h2>
           <div className="flex h-80 flex-row gap-4">
             {state.planSupply?.map((plan) => (
@@ -46,13 +47,13 @@ export default function LiveGame({ gameId, initialGame }: { gameId: string; init
           </div>
           <h2>Current turn: {playerToTakeTurn}</h2>
           <h2>Available turns:</h2>
-          <ul>
+          <div className="flex max-w-2xl flex-col gap-2">
             {availableTurns.map((turn, i) => (
-              <li key={i}>
-                <button onClick={() => handleSendTurn(turn)}>{JSON.stringify(turn.action)}</button>
-              </li>
+              <Button key={i} onClick={() => handleSendTurn(turn)}>
+                {JSON.stringify(turn.action)}
+              </Button>
             ))}
-          </ul>
+          </div>
         </div>
         <div>
           {user && userPlayer && (
