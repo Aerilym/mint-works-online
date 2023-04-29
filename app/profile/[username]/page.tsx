@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { getProfileByUsername } from '@/app/api/profile/[username]/route';
-import type { Profile } from '@/app/types/database';
+import type { Profile } from '@/types/database';
 
 import UserGames from './UserGames';
 import UserProfile from './UserProfile';

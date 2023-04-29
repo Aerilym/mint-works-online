@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import type { Lobby } from '@/app/types/database';
 import { Button } from '@/components';
 import { useSupabase } from '@/providers/supabase-provider';
+import type { Lobby } from '@/types/database';
 
 export default function LiveLobby({
   lobbyId,

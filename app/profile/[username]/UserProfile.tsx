@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
-import type { Profile } from '@/app/types/database';
-import { useUser } from '@/app/user-provider';
 import { Button } from '@/components';
+import { useUser } from '@/providers/user-provider';
+import type { Profile } from '@/types/database';
 
 import EditUser from './EditUser';
 

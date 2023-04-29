@@ -6,9 +6,9 @@ import type { Turn } from 'mint-works/dist/turn';
 import { useEffect, useState } from 'react';
 
 import { Plan } from '@/app/plan/Plan';
-import type { Game } from '@/app/types/database';
-import { useUser } from '@/app/user-provider';
 import { useSupabase } from '@/providers/supabase-provider';
+import { useUser } from '@/providers/user-provider';
+import type { Game } from '@/types/database';
 
 export default function LiveGame({ gameId, initialGame }: { gameId: string; initialGame: Game }) {
   const { user } = useUser();

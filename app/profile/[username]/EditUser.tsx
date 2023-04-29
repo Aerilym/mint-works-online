@@ -3,8 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Profile } from '@/app/types/database';
 import { Button, Input } from '@/components';
+import { Profile } from '@/types/database';
 
 const formDataSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters!'),

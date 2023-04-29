@@ -4,7 +4,7 @@ import { User } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { useSupabase } from './supabase-provider';
-import { Profile } from './types/database';
+import { Profile } from '@/types/database';
 
 interface UserData {
   id: string;

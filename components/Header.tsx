@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { useUser } from '@/app/user-provider';
+import { useUser } from '@/providers/user-provider';
 
 export default function Header() {
   const { user } = useUser();
