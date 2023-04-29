@@ -25,7 +25,11 @@ export default function Header() {
         </h3>
         <h3 className="text-xl">
           {user ? (
-            <Link href={`/profile/${user.username}`}>{user.username}</Link>
+            user.username === user.id ? (
+              <Link href={`/welcome`}>Pick A Username!</Link>
+            ) : (
+              <Link href={`/profile/${user.username}`}>{user.username}</Link>
+            )
           ) : (
             <Link href={'/login'}>Login</Link>
           )}

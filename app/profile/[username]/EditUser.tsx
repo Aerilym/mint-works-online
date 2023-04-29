@@ -12,7 +12,13 @@ const formDataSchema = z.object({
 
 type FormData = z.infer<typeof formDataSchema>;
 
-export default function EditUser({ profile }: { profile: Profile }) {
+export default function EditUser({
+  profile,
+  blankUsername,
+}: {
+  profile: Profile;
+  blankUsername?: boolean;
+}) {
   const {
     register,
     handleSubmit,
@@ -41,7 +47,7 @@ export default function EditUser({ profile }: { profile: Profile }) {
           type="text"
           className="uppercase"
           maxLength={12}
-          defaultValue={profile.username ?? ''}
+          defaultValue={blankUsername ? '' : profile.username ?? ''}
           {...register('username', {
             minLength: 3,
             maxLength: 12,
