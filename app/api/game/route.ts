@@ -1,11 +1,9 @@
 import { createRouteHandlerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { NextResponse } from 'next/server';
-import { headers, cookies } from 'next/headers';
+import { MintWorks } from 'mint-works';
+import type { Turn } from 'mint-works/dist/turn';
+import { cookies, headers } from 'next/headers';
 
 import type { Database } from '@/lib/database.types';
-import { MintWorks } from 'mint-works';
-import { Turn } from 'mint-works/dist/turn';
-import { redirect } from 'next/navigation';
 
 // do not cache this page
 export const revalidate = 0;

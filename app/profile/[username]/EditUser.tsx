@@ -1,11 +1,10 @@
 'use client';
-import { Button, Input } from '@/components';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+
 import { Profile } from '@/app/types/database';
+import { Button, Input } from '@/components';
 
 const formDataSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters!'),

@@ -1,6 +1,6 @@
-import { Plan } from 'mint-works/dist/plan';
 import { CurrencyDollarIcon, StarIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
+import type { Plan } from 'mint-works/dist/plan';
 
 interface PlanProps {
   plan: Plan;
@@ -32,7 +32,7 @@ export function Plan({ plan, className }: PlanProps) {
         className
       )}
     >
-      <h3 className={clsx('rounded p-2', color)}>{plan.name}</h3>
+      <h3 className={clsx('rounded p-2', color)}>{name}</h3>
 
       <div className="flex items-center justify-center p-2">
         {[...Array(cost)].map((_, idx) => (

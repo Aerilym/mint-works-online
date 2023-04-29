@@ -1,4 +1,5 @@
 import { createPlans } from 'mint-works/dist/plans';
+
 import { Plan } from './Plan';
 
 export default function Page() {

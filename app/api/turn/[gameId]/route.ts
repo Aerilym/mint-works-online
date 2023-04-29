@@ -1,9 +1,8 @@
 import { createRouteHandlerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { headers, cookies } from 'next/headers';
+import { MintWorksStateManager, MintWorksTurnFactory } from 'mint-works';
+import { cookies, headers } from 'next/headers';
 
 import type { Database } from '@/lib/database.types';
-import { MintWorksStateManager, MintWorksTurnFactory } from 'mint-works';
-import { MintWorksEngineState } from 'mint-works/dist/mint_works';
 
 // do not cache this page
 export const revalidate = 0;
@@ -33,6 +32,7 @@ export async function GET(
   if (!game) throw new Error('No game data found');
 
   // TODO: This works but is throwing a type error. Need to investigate and fix.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const state = JSON.parse(game.state);
 
@@ -81,6 +81,7 @@ export async function PUT(
   if (!game) throw new Error('No game data found');
 
   // TODO: This works but is throwing a type error. Need to investigate and fix.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const state = JSON.parse(game.state);
 

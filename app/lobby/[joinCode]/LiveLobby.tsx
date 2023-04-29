@@ -1,11 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { useSupabase } from '@/app/supabase-provider';
-import Link from 'next/link';
-import { Button } from '@/components';
 import type { Lobby } from '@/app/types/database';
+import { Button } from '@/components';
 
 export default function LiveLobby({
   lobbyId,

@@ -1,8 +1,8 @@
 import { createRouteHandlerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { headers, cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
+import type { Game } from '@/app/types/database';
 import type { Database } from '@/lib/database.types';
-import { Game } from '@/app/types/database';
 
 // do not cache this page
 export const revalidate = 0;

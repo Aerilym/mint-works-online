@@ -1,10 +1,11 @@
 'use client';
 
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { useSupabase } from '@/app/supabase-provider';
 import { Button } from '@/components';
 
-import Link from 'next/link';
-import { useSupabase } from '@/app/supabase-provider';
-import { useRouter } from 'next/navigation';
 import LiveLobby from './LiveLobby';
 
 interface PageParams {
@@ -25,6 +26,8 @@ export default async function Page({ params }: PageParams) {
     .select('*')
     .eq('join_code', joinCode.toLowerCase())
     .single();
+
+  if (error) console.error(error);
 
   const user = await supabase.auth.getUser();
   const userId = user.data.user?.id;
@@ -48,15 +51,13 @@ export default async function Page({ params }: PageParams) {
   };
 
   const handleJoinGame = async () => {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('lobbies')
       .update({
         player_2: userId,
       })
       .eq('id', lobby?.id);
-    if (error) {
-      console.error(error);
-    }
+    if (error) console.error(error);
   };
 
   return (
@@ -65,7 +66,7 @@ export default async function Page({ params }: PageParams) {
         Lobby <span className="rounded bg-red-500 p-2 shadow-xl">{joinCode}</span>
       </h1>
 
-      <LiveLobby lobbyId={lobby!.id} initialLobby={lobby!} />
+      {lobby && <LiveLobby lobbyId={lobby.id} initialLobby={lobby} />}
 
       {userId ? (
         isLobbyOwner ? (

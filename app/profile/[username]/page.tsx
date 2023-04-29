@@ -1,12 +1,10 @@
 import { redirect } from 'next/navigation';
-import type { Profile } from '@/app/types/database';
-import UserGames from './UserGames';
-import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { headers, cookies } from 'next/headers';
+
 import { getProfileByUsername } from '@/app/api/profile/[username]/route';
-import type { Database } from '@/lib/database.types';
+import type { Profile } from '@/app/types/database';
+
+import UserGames from './UserGames';
 import UserProfile from './UserProfile';
-import { useUser } from '@/app/user-provider';
 
 interface PageParams {
   params: {
@@ -25,11 +23,6 @@ export default async function Page({ params }: PageParams) {
     console.error(error);
     redirect(`/profile`);
   }
-
-  const supabase = createServerComponentSupabaseClient<Database>({
-    headers,
-    cookies,
-  });
 
   return (
     <div className="flex flex-col items-center gap-8">

@@ -1,18 +1,20 @@
 'use client';
 
+import type { MintWorksEngineState } from 'mint-works/dist/mint_works';
+import type { Building, HandPlan } from 'mint-works/dist/plan';
+import type { Turn } from 'mint-works/dist/turn';
 import { useEffect, useState } from 'react';
 
-import { useSupabase } from '@/app/supabase-provider';
-import { Turn } from 'mint-works/dist/turn';
-import type { Game } from '@/app/types/database';
-import { MintWorksEngineState } from 'mint-works/dist/mint_works';
 import { Plan } from '@/app/plan/Plan';
-import { Building, HandPlan } from 'mint-works/dist/plan';
+import { useSupabase } from '@/app/supabase-provider';
+import type { Game } from '@/app/types/database';
 import { useUser } from '@/app/user-provider';
 
 export default function LiveGame({ gameId, initialGame }: { gameId: string; initialGame: Game }) {
   const { user } = useUser();
   const { state, playerToTakeTurn, availableTurns } = useLiveGame(initialGame, gameId);
+
+  const userPlayer = state.players?.find((player) => player.label === user?.username);
 
   const handleSendTurn = async (turn: Turn) => {
     const res = await fetch(`/api/turn/${gameId}`, {
@@ -53,19 +55,13 @@ export default function LiveGame({ gameId, initialGame }: { gameId: string; init
           </ul>
         </div>
         <div>
-          {user && (
+          {user && userPlayer && (
             <div>
               <h2>Your neighbourhood:</h2>
               <div>
                 <h3>{user.username}</h3>
-                <h4>
-                  {state.players?.find((player) => player.label === user.username)?.tokens} tokens
-                </h4>
-                <Neighbourhood
-                  neighbourhood={
-                    state.players?.find((player) => player.label === user.username)?.neighbourhood!
-                  }
-                />
+                <h4>{userPlayer.tokens} tokens</h4>
+                <Neighbourhood neighbourhood={userPlayer.neighbourhood} />
               </div>
             </div>
           )}
@@ -97,6 +93,7 @@ function useLiveGame(
 } {
   const { user } = useUser();
   const [state, setLiveState] = useState<MintWorksEngineState>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     JSON.parse(initialGame.state as any) as MintWorksEngineState
   );
   const [playerToTakeTurn, setPlayerToTakeTurn] = useState<string | undefined>();
@@ -134,7 +131,7 @@ function useLiveGame(
         },
         (payload) => {
           console.log('Change received!', payload);
-          setLiveState(payload.new.state as any);
+          setLiveState(payload.new.state);
           setPlayerToTakeTurn(payload.new.player_to_take_turn);
           handleUpdateTurns();
         }

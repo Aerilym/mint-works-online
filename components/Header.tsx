@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+
 import { useUser } from '@/app/user-provider';
 
 export default function Header() {

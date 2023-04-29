@@ -1,10 +1,12 @@
 'use client';
 
-import { Profile } from '@/app/types/database';
-import { Button } from '@/components';
 import { useState } from 'react';
-import EditUser from './EditUser';
+
+import type { Profile } from '@/app/types/database';
 import { useUser } from '@/app/user-provider';
+import { Button } from '@/components';
+
+import EditUser from './EditUser';
 
 export default function UserProfile({ profile }: { profile: Profile }) {
   const { user } = useUser();

@@ -1,10 +1,11 @@
 'use client';
-import { Button, Input } from '@/components';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+
+import { Button, Input } from '@/components';
 
 const formDataSchema = z.object({
   joinCode: z.string().length(6, 'The lobby code must be exactly 6 characters!'),

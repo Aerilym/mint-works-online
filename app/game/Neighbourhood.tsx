@@ -1,4 +1,5 @@
 import type { Neighbourhood as MintWorksNeighbourhood } from 'mint-works/dist/neighbourhood';
+
 import { Plan } from '@/app/plan/Plan';
 
 interface NeighbourhoodProps {

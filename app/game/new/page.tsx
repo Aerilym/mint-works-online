@@ -1,10 +1,10 @@
 import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import Link from 'next/link';
-import { headers, cookies } from 'next/headers';
 import Hashids from 'hashids';
+import { cookies, headers } from 'next/headers';
+import Link from 'next/link';
 
-import type { Database } from '@/lib/database.types';
 import { Button } from '@/components';
+import type { Database } from '@/lib/database.types';
 
 export default async function Page() {
   const supabase = createServerComponentSupabaseClient<Database>({

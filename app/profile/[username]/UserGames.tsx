@@ -1,5 +1,6 @@
-import { getGameList } from '@/app/api/user/[userId]/games/route';
 import Link from 'next/link';
+
+import { getGameList } from '@/app/api/user/[userId]/games/route';
 import { Button } from '@/components';
 
 export default async function UserGames({ userId }: { userId: string }) {

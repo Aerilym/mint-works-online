@@ -1,8 +1,9 @@
 'use client';
 
 import { Auth } from '@supabase/auth-ui-react';
-import { useSupabase } from '@/app/supabase-provider';
 import { useRouter } from 'next/navigation';
+
+import { useSupabase } from '@/app/supabase-provider';
 
 export default function Page() {
   const router = useRouter();
