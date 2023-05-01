@@ -44,6 +44,9 @@ export default function Header() {
             <Link href={`/profile/${user.username}`}>
               <DropdownItem>Games</DropdownItem>
             </Link>
+            <Link href={`/profile/${user.username}`}>
+              <DropdownItem>Lobbies</DropdownItem>
+            </Link>
             <Link href={'/logout'}>
               <DropdownItem>Logout</DropdownItem>
             </Link>
