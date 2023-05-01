@@ -4,6 +4,8 @@ import Link from 'next/link';
 
 import { useUser } from '@/providers/user-provider';
 
+import { Avatar } from './Avatar';
+
 export default function Header() {
   const { user } = useUser();
 
@@ -38,6 +40,12 @@ export default function Header() {
           <h3 className="text-xl">
             <Link href={'/logout'}>Logout</Link>
           </h3>
+        )}
+        {user && (
+          <Avatar
+            src={`/api/profile/${user.username}/avatar`}
+            alt={`Profile picture for ${user.username}`}
+          />
         )}
       </div>
     </header>

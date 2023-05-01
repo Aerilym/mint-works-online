@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Button, Input } from '@/components';
+import { Avatar, Button, Input } from '@/components';
 import { Profile } from '@/types/database';
 
 const formDataSchema = z.object({
@@ -57,6 +57,14 @@ export default function EditUser({
         <p className="text-sm text-red-700">{errors.username?.message}</p>
         <Button type="submit">Update Details</Button>
       </form>
+      <Avatar
+        src={`/api/profile/${profile.username}/avatar`}
+        alt={`Profile picture for ${profile.username}`}
+      />
+      We use Gravatar for profile pictures.
+      <a href="https://gravatar.com/">
+        <Button>Gravatar</Button>
+      </a>
     </div>
   );
 }
