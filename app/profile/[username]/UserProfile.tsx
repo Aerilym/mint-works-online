@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Button } from '@/components';
+import { Avatar, Button } from '@/components';
 import { useUser } from '@/providers/user-provider';
 import type { Profile } from '@/types/database';
 
@@ -30,7 +30,10 @@ export default function UserProfile({ profile }: { profile: Profile }) {
         ) : (
           <>
             <h3>Username: {profile.username}</h3>
-            <h3>Id: {profile.id}</h3>
+            <Avatar
+              src={`/api/profile/${profile.username}/avatar`}
+              alt={`Profile picture for ${profile.username}`}
+            />
           </>
         )}
       </div>

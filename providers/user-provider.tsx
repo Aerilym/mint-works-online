@@ -1,10 +1,12 @@
 'use client';
 
 import { User } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { useSupabase } from './supabase-provider';
 import { Profile } from '@/types/database';
+
+import { useSupabase } from './supabase-provider';
 
 interface UserData {
   id: string;
@@ -19,6 +21,7 @@ const Context = createContext<UserContext | undefined>(undefined);
 
 export default function UserProvider({ children }: { children: React.ReactNode }) {
   const { supabase } = useSupabase();
+  const router = useRouter();
   const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
@@ -27,6 +30,10 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       const profile = (await res.json()) as Profile;
 
       if (!profile) throw new Error('No profile found!');
+
+      if (!profile.username || profile.username === '' || profile.username === profile.id) {
+        router.push('/welcome');
+      }
 
       setUser({
         id: user.id,
@@ -53,7 +60,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [router, supabase]);
 
   return (
     <Context.Provider value={{ user }}>

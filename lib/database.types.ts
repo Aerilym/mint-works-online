@@ -83,6 +83,7 @@ export interface Database {
       profiles: {
         Row: {
           avatar_url: string | null;
+          email_hash: string | null;
           full_name: string | null;
           id: string;
           updated_at: string | null;
@@ -91,6 +92,7 @@ export interface Database {
         };
         Insert: {
           avatar_url?: string | null;
+          email_hash?: string | null;
           full_name?: string | null;
           id: string;
           updated_at?: string | null;
@@ -99,6 +101,7 @@ export interface Database {
         };
         Update: {
           avatar_url?: string | null;
+          email_hash?: string | null;
           full_name?: string | null;
           id?: string;
           updated_at?: string | null;
@@ -111,7 +114,10 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      update_all_email_hashes: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
     };
     Enums: {
       [_ in never]: never;

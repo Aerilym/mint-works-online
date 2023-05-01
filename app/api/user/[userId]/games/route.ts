@@ -30,23 +30,35 @@ export async function GET(request: Request, { params }: GETOptions) {
  * @param userId - The userId of the games to get
  * @returns The list of games
  */
-export async function getGameList({ userId }: { userId: string }): Promise<Array<Partial<Game>>> {
+export async function getGameList({ userId }: { userId: string }) {
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
     cookies,
   });
 
-  const { data: games, error } = await supabase
+  const { data: lobbyJoin, error } = await supabase
     .from('lobbies')
-    .select('game_id (game_id, player_to_take_turn)')
+    .select(
+      'player_1 (username), player_2 (username), player_3 (username), player_4 (username), game_id (game_id, state, player_to_take_turn)'
+    )
     .not('game_id', 'is', null)
     .or(`player_1.eq.${userId},player_2.eq.${userId},player_3.eq.${userId},player_4.eq.${userId}`);
 
   if (error) throw new Error(error.message);
-  if (!games) throw new Error('No games found');
+  if (!lobbyJoin) throw new Error('No games found');
 
   // As there is a table join, game.game_id is actually the game object
-  const gameList = games.map((game) => game.game_id);
+  const gameList = lobbyJoin.map((join) => {
+    const playerList = [join.player_1, join.player_2, join.player_3, join.player_4]
+      .filter(Boolean)
+      .filter(
+        (player) => player && 'username' in player && typeof player.username === 'string'
+      ) as { username: string }[];
+    return {
+      game: join.game_id as Partial<Game>,
+      players: playerList.map((player) => player.username),
+    };
+  });
 
-  return gameList as Array<Partial<Game>>;
+  return gameList;
 }

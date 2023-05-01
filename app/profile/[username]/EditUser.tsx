@@ -3,16 +3,32 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Button, Input } from '@/components';
+import { Avatar, Button, Input } from '@/components';
 import { Profile } from '@/types/database';
 
+//usernames must not contain spaces
+const isNotContainingSpaces = (username: string): username is `${string}` =>
+  username.split(' ').length === 1;
+
 const formDataSchema = z.object({
-  username: z.string().min(3, 'Username must be at least 3 characters!'),
+  username: z
+    .string()
+    .min(3, 'Username must be at least 3 characters!')
+    .max(12, 'Username must be at most 12 characters!')
+    .refine(isNotContainingSpaces, {
+      message: 'Username must not contain spaces!',
+    }),
 });
 
 type FormData = z.infer<typeof formDataSchema>;
 
-export default function EditUser({ profile }: { profile: Profile }) {
+export default function EditUser({
+  profile,
+  blankUsername,
+}: {
+  profile: Profile;
+  blankUsername?: boolean;
+}) {
   const {
     register,
     handleSubmit,
@@ -39,9 +55,8 @@ export default function EditUser({ profile }: { profile: Profile }) {
       <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="text"
-          className="uppercase"
           maxLength={12}
-          defaultValue={profile.username ?? ''}
+          defaultValue={blankUsername ? '' : profile.username ?? ''}
           {...register('username', {
             minLength: 3,
             maxLength: 12,
@@ -51,6 +66,14 @@ export default function EditUser({ profile }: { profile: Profile }) {
         <p className="text-sm text-red-700">{errors.username?.message}</p>
         <Button type="submit">Update Details</Button>
       </form>
+      <Avatar
+        src={`/api/profile/${profile.username}/avatar`}
+        alt={`Profile picture for ${profile.username}`}
+      />
+      We use Gravatar for profile pictures.
+      <a href="https://gravatar.com/">
+        <Button>Gravatar</Button>
+      </a>
     </div>
   );
 }
