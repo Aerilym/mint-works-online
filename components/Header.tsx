@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useUser } from '@/providers/user-provider';
 
 import { Avatar } from './Avatar';
+import { Dropdown, DropdownItem } from './Dropdown';
 
 export default function Header() {
   const { user } = useUser();
@@ -26,26 +27,31 @@ export default function Header() {
           <Link href={'/'}>Info</Link>
         </h3>
         <h3 className="text-xl">
-          {user ? (
-            user.username === user.id ? (
-              <Link href={`/welcome`}>Pick A Username!</Link>
-            ) : (
-              <Link href={`/profile/${user.username}`}>{user.username}</Link>
-            )
-          ) : (
-            <Link href={'/login'}>Login</Link>
-          )}
+          {user && user.username === user.id && <Link href={`/welcome`}>Pick A Username!</Link>}
         </h3>
-        {user && (
+        {user ? (
+          <Dropdown
+            buttonChildren={
+              <Avatar
+                src={`/api/profile/${user.username}/avatar`}
+                alt={`Profile picture for ${user.username}`}
+              />
+            }
+          >
+            <Link href={`/profile/${user.username}`}>
+              <DropdownItem>Profile</DropdownItem>
+            </Link>
+            <Link href={`/profile/${user.username}`}>
+              <DropdownItem>Games</DropdownItem>
+            </Link>
+            <Link href={'/logout'}>
+              <DropdownItem>Logout</DropdownItem>
+            </Link>
+          </Dropdown>
+        ) : (
           <h3 className="text-xl">
-            <Link href={'/logout'}>Logout</Link>
+            <Link href={'/login'}>Login</Link>
           </h3>
-        )}
-        {user && (
-          <Avatar
-            src={`/api/profile/${user.username}/avatar`}
-            alt={`Profile picture for ${user.username}`}
-          />
         )}
       </div>
     </header>
