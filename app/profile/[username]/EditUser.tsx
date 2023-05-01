@@ -6,8 +6,18 @@ import * as z from 'zod';
 import { Avatar, Button, Input } from '@/components';
 import { Profile } from '@/types/database';
 
+//usernames must not contain spaces
+const isNotContainingSpaces = (username: string): username is `${string}` =>
+  username.split(' ').length === 1;
+
 const formDataSchema = z.object({
-  username: z.string().min(3, 'Username must be at least 3 characters!'),
+  username: z
+    .string()
+    .min(3, 'Username must be at least 3 characters!')
+    .max(12, 'Username must be at most 12 characters!')
+    .refine(isNotContainingSpaces, {
+      message: 'Username must not contain spaces!',
+    }),
 });
 
 type FormData = z.infer<typeof formDataSchema>;
@@ -45,7 +55,6 @@ export default function EditUser({
       <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="text"
-          className="uppercase"
           maxLength={12}
           defaultValue={blankUsername ? '' : profile.username ?? ''}
           {...register('username', {
