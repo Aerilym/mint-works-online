@@ -4,6 +4,7 @@ import { getProfileByUsername } from '@/app/api/profile/[username]/route';
 import type { Profile } from '@/types/database';
 
 import UserGames from './UserGames';
+import UserLobbies from './UserLobbies';
 import UserProfile from './UserProfile';
 
 interface PageParams {
@@ -29,6 +30,8 @@ export default async function Page({ params }: PageParams) {
       {profile && <UserProfile profile={profile} />}
       {/* @ts-expect-error Async Server Component */}
       {profile.id && <UserGames userId={profile.id} />}
+      {/* @ts-expect-error Async Server Component */}
+      {profile.id && <UserLobbies userId={profile.id} />}
     </div>
   );
 }
