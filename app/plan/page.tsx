@@ -1,4 +1,4 @@
-import { createPlans } from 'mint-works/dist/plans';
+import { createPlans } from 'mint-works';
 
 import { Plan } from './Plan';
 

@@ -1,8 +1,6 @@
 'use client';
 
-import type { MintWorksEngineState } from 'mint-works/dist/mint_works';
-import type { Building, HandPlan } from 'mint-works/dist/plan';
-import type { Turn } from 'mint-works/dist/turn';
+import type { Building, HandPlan, MintWorksEngineState, Turn } from 'mint-works';
 import { useEffect, useState } from 'react';
 
 import { Plan } from '@/app/plan/Plan';

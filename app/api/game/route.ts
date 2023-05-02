@@ -1,6 +1,5 @@
 import { createRouteHandlerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { MintWorks } from 'mint-works';
-import type { Turn } from 'mint-works/dist/turn';
+import { MintWorks, Turn } from 'mint-works';
 import { cookies, headers } from 'next/headers';
 
 import type { Database } from '@/lib/database.types';
