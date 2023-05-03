@@ -34,7 +34,7 @@ export const revalidate = 0;
 export async function GET(request: Request, { params }: GETOptions) {
   const lobbyId = params.lobbyId;
 
-  const lobby = await getLobby({ lobbyId });
+  const lobby = await singleGetLobby({ lobbyId });
 
   return new Response(JSON.stringify(lobby), {
     headers: {
@@ -113,7 +113,7 @@ export async function PATCH(request: Request, { params }: PATCHOptions) {
   });
 }
 
-export async function getLobby({ lobbyId }: { lobbyId: string }): Promise<Lobby> {
+export async function singleGetLobby({ lobbyId }: { lobbyId: string }): Promise<Lobby> {
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
     cookies,
@@ -169,7 +169,7 @@ export async function joinLobby({
   lobbyId: string;
   userId: string;
 }): Promise<void> {
-  const lobby = await getLobby({ lobbyId });
+  const lobby = await singleGetLobby({ lobbyId });
 
   const emptyPlayerPosition = ['player_1', 'player_2', 'player_3', 'player_4'].find(
     (playerPosition) => !lobby[playerPosition as keyof Lobby]
