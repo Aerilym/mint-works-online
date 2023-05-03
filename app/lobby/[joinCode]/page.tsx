@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components';
 import { useSupabase } from '@/providers/supabase-provider';
@@ -17,8 +16,6 @@ interface PageParams {
 export default async function Page({ params }: PageParams) {
   const joinCode = params.joinCode.toLocaleUpperCase();
 
-  const router = useRouter();
-
   const { supabase } = useSupabase();
 
   const { data: lobby, error } = await supabase
@@ -29,36 +26,15 @@ export default async function Page({ params }: PageParams) {
 
   if (error) console.error(error);
 
-  const user = await supabase.auth.getUser();
-  const userId = user.data.user?.id;
-
-  const isLobbyOwner = lobby?.player_1 === userId;
-
-  const handleStartGame = async () => {
-    const res = await fetch(`/api/game`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        lobby_id: lobby?.id,
-      }),
-    });
-
-    const { game_id } = await res.json();
-
-    router.push(`/game/${game_id}`);
-  };
-
-  const handleJoinGame = async () => {
-    const { error } = await supabase
-      .from('lobbies')
-      .update({
-        player_2: userId,
-      })
-      .eq('id', lobby?.id);
-    if (error) console.error(error);
-  };
+  if (!lobby)
+    return (
+      <div>
+        <div>Invalid join code {joinCode}</div>
+        <Link href="/game">
+          <Button>Enter a new code</Button>
+        </Link>
+      </div>
+    );
 
   return (
     <div className="flex flex-col gap-8">
@@ -67,23 +43,6 @@ export default async function Page({ params }: PageParams) {
       </h1>
 
       {lobby && <LiveLobby lobbyId={lobby.id} initialLobby={lobby} />}
-
-      {userId ? (
-        isLobbyOwner ? (
-          <Button disabled>Join Game</Button>
-        ) : (
-          <Button onClick={handleJoinGame}>Join Game</Button>
-        )
-      ) : (
-        <Link href={'/login'}>
-          <Button>Login to Join</Button>
-        </Link>
-      )}
-      {isLobbyOwner ? (
-        <Button onClick={handleStartGame}>Start Game</Button>
-      ) : (
-        <Button disabled>Owner must start game</Button>
-      )}
     </div>
   );
 }

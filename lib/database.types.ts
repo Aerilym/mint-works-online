@@ -50,6 +50,7 @@ export interface Database {
       };
       lobbies: {
         Row: {
+          announce: boolean | null;
           created_at: string | null;
           game_id: string | null;
           id: number;
@@ -60,6 +61,7 @@ export interface Database {
           player_4: string | null;
         };
         Insert: {
+          announce?: boolean | null;
           created_at?: string | null;
           game_id?: string | null;
           id?: number;
@@ -70,6 +72,7 @@ export interface Database {
           player_4?: string | null;
         };
         Update: {
+          announce?: boolean | null;
           created_at?: string | null;
           game_id?: string | null;
           id?: number;

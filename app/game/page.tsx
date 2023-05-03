@@ -7,6 +7,8 @@ import * as z from 'zod';
 
 import { Button, Input } from '@/components';
 
+import { PublicLobbies } from './PublicLobbies';
+
 const formDataSchema = z.object({
   joinCode: z.string().length(6, 'The lobby code must be exactly 6 characters!'),
 });
@@ -51,6 +53,9 @@ export default function Page() {
       <Link href="/game/new">
         <Button>Create a new game</Button>
       </Link>
+
+      {/* @ts-expect-error Async Server Component */}
+      <PublicLobbies />
     </div>
   );
 }
