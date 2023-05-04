@@ -113,7 +113,7 @@ export async function PATCH(request: Request, { params }: PATCHOptions) {
   });
 }
 
-export async function singleGetLobby({ lobbyId }: { lobbyId: string }): Promise<Lobby> {
+async function singleGetLobby({ lobbyId }: { lobbyId: string }): Promise<Lobby> {
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
     cookies,
