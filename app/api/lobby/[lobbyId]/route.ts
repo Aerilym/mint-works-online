@@ -126,7 +126,7 @@ async function singleGetLobby({ lobbyId }: { lobbyId: string }): Promise<Lobby> 
   return lobby;
 }
 
-export async function deleteLobby({ lobbyId }: { lobbyId: string }): Promise<void> {
+async function deleteLobby({ lobbyId }: { lobbyId: string }): Promise<void> {
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
     cookies,
