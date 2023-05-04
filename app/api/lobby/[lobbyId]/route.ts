@@ -34,7 +34,7 @@ export const revalidate = 0;
 export async function GET(request: Request, { params }: GETOptions) {
   const lobbyId = params.lobbyId;
 
-  const lobby = await getLobby({ lobbyId });
+  const lobby = await singleGetLobby({ lobbyId });
 
   return new Response(JSON.stringify(lobby), {
     headers: {
@@ -113,7 +113,7 @@ export async function PATCH(request: Request, { params }: PATCHOptions) {
   });
 }
 
-export async function getLobby({ lobbyId }: { lobbyId: string }): Promise<Lobby> {
+async function singleGetLobby({ lobbyId }: { lobbyId: string }): Promise<Lobby> {
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
     cookies,
@@ -126,7 +126,7 @@ export async function getLobby({ lobbyId }: { lobbyId: string }): Promise<Lobby>
   return lobby;
 }
 
-export async function deleteLobby({ lobbyId }: { lobbyId: string }): Promise<void> {
+async function deleteLobby({ lobbyId }: { lobbyId: string }): Promise<void> {
   const supabase = createRouteHandlerSupabaseClient<Database>({
     headers,
     cookies,
@@ -162,14 +162,8 @@ async function addUserToLobby({
   if (error) throw new Error(error.message);
 }
 
-export async function joinLobby({
-  lobbyId,
-  userId,
-}: {
-  lobbyId: string;
-  userId: string;
-}): Promise<void> {
-  const lobby = await getLobby({ lobbyId });
+async function joinLobby({ lobbyId, userId }: { lobbyId: string; userId: string }): Promise<void> {
+  const lobby = await singleGetLobby({ lobbyId });
 
   const emptyPlayerPosition = ['player_1', 'player_2', 'player_3', 'player_4'].find(
     (playerPosition) => !lobby[playerPosition as keyof Lobby]
@@ -180,7 +174,7 @@ export async function joinLobby({
   await addUserToLobby({ lobbyId, userId, playerPosition: emptyPlayerPosition });
 }
 
-export async function changeLobbyAnnounce({
+async function changeLobbyAnnounce({
   lobbyId,
   announce,
 }: {
