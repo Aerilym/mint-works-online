@@ -162,13 +162,7 @@ async function addUserToLobby({
   if (error) throw new Error(error.message);
 }
 
-export async function joinLobby({
-  lobbyId,
-  userId,
-}: {
-  lobbyId: string;
-  userId: string;
-}): Promise<void> {
+async function joinLobby({ lobbyId, userId }: { lobbyId: string; userId: string }): Promise<void> {
   const lobby = await singleGetLobby({ lobbyId });
 
   const emptyPlayerPosition = ['player_1', 'player_2', 'player_3', 'player_4'].find(
@@ -180,7 +174,7 @@ export async function joinLobby({
   await addUserToLobby({ lobbyId, userId, playerPosition: emptyPlayerPosition });
 }
 
-export async function changeLobbyAnnounce({
+async function changeLobbyAnnounce({
   lobbyId,
   announce,
 }: {
