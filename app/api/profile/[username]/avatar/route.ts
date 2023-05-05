@@ -46,13 +46,11 @@ export async function GET(request: Request, { params }: GETOptions) {
     }
   }
 
-  const defaultRes = await fetch('/images/default-avatar.png');
-
-  if (!defaultRes.ok) throw new Error('Could not fetch default avatar');
-  return new Response(defaultRes.body, {
+  return new Response('Image not found', {
+    status: 404,
     headers: {
       ...baseHeaders,
-      'content-type': defaultRes.headers.get('content-type') || 'image/png',
+      'content-type': 'image/png',
     },
   });
 }
