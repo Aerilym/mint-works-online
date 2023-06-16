@@ -28,7 +28,7 @@ export default async function Page({ params }: PageParams) {
   if (error) console.error(error);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="absolute left-4 flex flex-col gap-8">
       <h1 className="mt-2 text-2xl">
         Game <span className="rounded bg-red-500 p-2 shadow-xl">{gameId}</span>
       </h1>

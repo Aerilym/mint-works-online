@@ -3,11 +3,14 @@
 import type { Building, HandPlan, MintWorksEngineState, Turn } from 'mint-works';
 import { useEffect, useState } from 'react';
 
+import { Location } from '@/app/location/Location';
 import { Plan } from '@/app/plan/Plan';
 import { Button } from '@/components';
 import { useSupabase } from '@/providers/supabase-provider';
 import { useUser } from '@/providers/user-provider';
 import type { Game } from '@/types/database';
+
+import { TurnBanner } from './TurnBanner';
 
 export default function LiveGame({ gameId, initialGame }: { gameId: string; initialGame: Game }) {
   const { user } = useUser();
@@ -33,49 +36,64 @@ export default function LiveGame({ gameId, initialGame }: { gameId: string; init
   };
 
   return (
-    <div>
-      <h1>Game {gameId}</h1>
-      <div className="flex w-screen flex-row gap-20">
-        <div className="w-min">
-          <h2>Plan Supply:</h2>
-          <div className="flex h-80 flex-row gap-4">
+    <div className="flex w-screen flex-col gap-10">
+      <div className="h-min w-min">
+        <h2>Locations</h2>
+        <div className="flex flex-row gap-4">
+          {state.locations?.map((location) => (
+            <Location key={location.name} location={location} />
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-row gap-4">
+        <div className="flex h-min w-min flex-col">
+          <h2>Plan Supply</h2>
+          <div
+            className="flex flex-row gap-4"
+            style={{
+              height: '340px',
+              width: '662px',
+            }}
+          >
             {state.planSupply?.map((plan) => (
               <Plan key={plan.name} plan={plan} />
             ))}
           </div>
+        </div>
+        <div>
           <h2>Current turn: {playerToTakeTurn}</h2>
           <h2>Available turns:</h2>
           <div className="flex max-w-2xl flex-col gap-2">
             {availableTurns.map((turn, i) => (
               <Button key={i} onClick={() => handleSendTurn(turn)}>
-                {JSON.stringify(turn.action)}
+                <TurnBanner turn={turn} />
               </Button>
             ))}
           </div>
         </div>
-        <div>
-          {user && userPlayer && (
-            <div>
-              <h2>Your neighbourhood:</h2>
-              <div>
-                <h3>{user.username}</h3>
-                <h4>{userPlayer.tokens} tokens</h4>
-                <Neighbourhood neighbourhood={userPlayer.neighbourhood} />
-              </div>
-            </div>
-          )}
-          <h2>Other neighbourhoods:</h2>
+      </div>
+      <div>
+        {user && userPlayer && (
           <div>
-            {state.players
-              ?.filter((player) => player.label !== user?.username)
-              .map((player) => (
-                <div key={player.label}>
-                  <h3>{player.label}</h3>
-                  <h4>{player.tokens} tokens</h4>
-                  <Neighbourhood neighbourhood={player.neighbourhood} />
-                </div>
-              ))}
+            <h2>Your neighbourhood:</h2>
+            <div>
+              <h3>{user.username}</h3>
+              <h4>{userPlayer.tokens} tokens</h4>
+              <Neighbourhood neighbourhood={userPlayer.neighbourhood} />
+            </div>
           </div>
+        )}
+        <h2>Other neighbourhoods:</h2>
+        <div>
+          {state.players
+            ?.filter((player) => player.label !== user?.username)
+            .map((player) => (
+              <div key={player.label}>
+                <h3>{player.label}</h3>
+                <h4>{player.tokens} tokens</h4>
+                <Neighbourhood neighbourhood={player.neighbourhood} />
+              </div>
+            ))}
         </div>
       </div>
     </div>
