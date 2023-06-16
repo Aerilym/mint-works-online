@@ -18,11 +18,7 @@ export default function Page() {
   return (
     <div className="flex flex-col">
       <h1 className="mt-2 self-center text-2xl">Login</h1>
-      <Auth
-        supabaseClient={supabase}
-        providers={['google', 'facebook', 'discord']}
-        redirectTo="/profile"
-      />
+      <Auth supabaseClient={supabase} providers={['google']} redirectTo="/profile" />
     </div>
   );
 }
